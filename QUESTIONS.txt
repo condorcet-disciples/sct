@@ -1,0 +1,3 @@
+- What is your reasoning process when choosing how to model something 
+  (e.g. our preferences is a list, but it could be something else)
+- Do we need 1 py file per class

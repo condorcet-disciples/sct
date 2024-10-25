@@ -1,0 +1,3 @@
+- preferences for now is just a list as we only supoprt ordered voring, 
+  however it could become a class where we could define more complex preferences.
+- 
