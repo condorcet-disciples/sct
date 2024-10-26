@@ -1,3 +1,5 @@
 - preferences for now is just a list as we only supoprt ordered voring, 
   however it could become a class where we could define more complex preferences.
 - 
+
+- For preferences of agents: We can use the ranking provided to look for the corresponding preference in a matrix of all possible preferences

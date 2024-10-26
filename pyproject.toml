@@ -18,6 +18,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+    "numpy",
+    "sympy"
+]
 
 [project.urls]
 "Source" = "https://github.com/condorcet-disciples/sct.git"
