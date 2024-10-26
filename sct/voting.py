@@ -2,7 +2,8 @@ import numpy as np
 from sct.agent import Agent
 from sct.candidates import Candidates
 
-class Election():
+
+class Election:
     '''
     Contains voting methods
     '''
@@ -28,3 +29,7 @@ class Election():
         winner = candidates.names[winner_idx]
 
         return winner
+    
+    
+class Plurality:
+    def __init__(self, agents, candidates, winners=1)
