@@ -25,18 +25,23 @@ class Election:
 
         all_prefs = [agent.prefs * agent.coef for agent in agents] # Creating a list of matrices of preferences from the candidates weighted by the coefficient ascribed
         results = sum(all_prefs) # Summing preferences
-        tie_flag = np.full(results.shape[0], False)
+        # tie_flag = np.full(results.shape[0], False)
         winners = []
-        i=0
+        remaining_results = results.copy()[0]
+
         while len(winners)<num_winners:
-            winner_idx = np.where(results[i]==max(results[i])) # Selecting the candidate that had the best score for the first row - #TODO: Adapt for multi-winners & ties 
-            if len(winner_idx[0])>1:
-                tie_flag[i]=True
+            
+            winner_idx = np.where(results[0]==max(remaining_results)) # Selecting the candidate that had the best score for the first row.
+
+            remaining_results = remaining_results[remaining_results != max(remaining_results)] # Updating 'remaining results' so that we can select if more than one winner.
+
             for idx in winner_idx[0]:
                 winners.append(candidates.names[idx]) # Accessing the name of the winner
-            i+=1
 
-        return winners, results, tie_flag
+            if np.allclose(remaining_results,0): # End if no one else was put first.
+                break
+
+        return winners, results
     
     def borda(self, candidates: Candidates, agents: list, score_type='asymmetric'):
         '''
@@ -51,8 +56,11 @@ class Election:
         '''
 
         vector_score = np.array(list(reversed(range(len(candidates.names.values())))))
+
         all_prefs = [(vector_score @ agent.prefs) * agent.coef for agent in agents] # Creating a list of matrices of preferences from the candidates weighted by the coefficient ascribed
+
         results = sum(all_prefs) # Summing preferences
+
         winner_idx = np.argmax(results) # Selecting the candidate that had the best score for the first row - #TODO: Adapt for multi-winners & ties 
         winner = candidates.names[winner_idx] # Accessing the name of the winner
 
