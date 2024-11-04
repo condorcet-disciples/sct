@@ -7,5 +7,7 @@ class Candidates:
         '''
         transform a list of (n) names into a dictionary with keys from 0 to n.
         '''
-        # TODO: Why do you need it as a dictionary like that?
-        self.names = {i:v for i,v in enumerate(sorted(names))}
+        # TODO: do error handling ofr iif candidates are not strings
+
+        self.names = [name.lower() for name in sorted(names)]
+        
