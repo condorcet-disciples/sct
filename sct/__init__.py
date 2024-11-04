@@ -1,3 +1,3 @@
 from .agent import *
 from .candidates import *
-from .voting import *
+from .old_voting import *
