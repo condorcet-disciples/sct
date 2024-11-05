@@ -5,3 +5,5 @@
 - For preferences of agents: We can use the ranking provided to look for the corresponding preference in a matrix of all possible preferences
 - I think for voting the best way is to have one sort of super class where we define thigns that all elections have in common
   and then use decorators to create othe methods
+
+  -Add multiple winners for plurality
