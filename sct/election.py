@@ -26,8 +26,7 @@ class Election:
         self.candidates = candidates
         self.agents = agents
 
-
-class Plurailty(Election):
+class Plurality(Election):
     """Represents a plurality (or first-past-the-post) voting system where the candidate with the most votes wins.
 
     Each agent's top candidate preference is counted as a single vote. The candidate with the 
@@ -54,9 +53,10 @@ class Plurailty(Election):
     show_full_results()
         Displays a summary of the full voting results, including each candidate's vote count.
     """
-    def __init__(self, candidates, agents, allow_ties=True):
+    def __init__(self, candidates, agents, allow_ties=True, num_winners=1):
         super().__init__(candidates, agents)
         self.allow_ties = allow_ties
+        self.num_winners = num_winners
 
     def calculate_results(self):
         """Calculates the results of the plurality election.
@@ -67,18 +67,39 @@ class Plurailty(Election):
 
         Returns
         -------
-        tuple
-            A tuple containing the winner(s) and their respective vote count.
+        dict
+            A sorted dictionary containing the candidates and their respective vote count.
         """
-        pass # shoudl reutrn winner and votes earned imo
+        
+        # Create empty dictionary for candidates with each candidate at 0
+        results = {c:0 for c in (self.candidates.names)}
 
-    def show_full_results(self):
-        """Displays the full results of the plurality election.
+        # Run the election
+        for agent in self.agents:
+            choice = agent.choices[0]
+            results[choice]+=1
 
-        This includes a summary of each candidate and the total votes they received.
+        # Sorting the results
+        results = dict(sorted(results.items(), key=lambda item: item[1], reverse=True))
+
+        return results
+    
+    def winners(self):
+        """Returns only the winners of the plurality method.
+
+        Returns
+        -------
+        dict
+            A sorted dictionary containing the winners and their respective vote count.
         """
-        pass
 
+        results = self.calculate_results()
+
+        # Save the results
+        max_value = max(results.values())
+        winners = {key:value for key, value in results.items() if value == max_value}
+
+        return winners
 
 class Borda(Election):
     """Represents a Borda count voting system where candidates are ranked and points are awarded 
@@ -121,14 +142,37 @@ class Borda(Election):
 
         Returns
         -------
-        tuple
-            A tuple containing the winner(s) and their respective scores.
+        dict
+            A sorted dictionary containing the candidates and their respective vote count.
         """
-        pass # shoudl reutrn winner and votes earned imo
 
-    def show_full_results(self):
-        """Displays the full results of the Borda count election.
+        results = {c:0 for c in (self.candidates.names)}
 
-        This includes a summary of each candidate and the total points they received.
+        # Run the election
+        for agent in self.agents:
+            i = len(agent.choices) - 1
+            for choice in agent.choices:
+                results[choice]+=i
+                i-=1
+
+        # Sorting the results
+        results = dict(sorted(results.items(), key=lambda item: item[1], reverse=True))
+
+        return results
+
+    def winners(self):
+        """Returns only the winners of the Borda method.
+
+        Returns
+        -------
+        dict
+            A sorted dictionary containing the winners and their respective vote count.
         """
-        pass
+        results = self.calculate_results()
+
+        # Save the results
+        max_value = max(results.values())
+        winners = {key:value for key, value in results.items() if value == max_value}
+
+        return winners
+        
