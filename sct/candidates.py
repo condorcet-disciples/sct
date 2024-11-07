@@ -54,4 +54,3 @@ class Candidates:
             If the candidate is not in the collection.
         """
         pass
-        
