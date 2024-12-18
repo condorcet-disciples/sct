@@ -23,7 +23,7 @@ class Candidates:
     """
     def __init__(self, names: list):
         # TODO: do error handling ofr iif candidates are not strings
-        self.names = [name.lower() for name in sorted(names)]
+        self.names = [name.lower() for name in names]
 
     def add_candidate(self, name):
         """Adds a new candidate to the collection.
