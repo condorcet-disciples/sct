@@ -61,18 +61,18 @@ class Election:
         '''
         Function to generate an arbitrary number of agents with random preferences
         '''
-
         # Creating a list of all permutations of candidates
-        perms = list(itertools.permutations(self.candidates.names))
-
-        # Probability of each permutation (uniform distribution)       
-        probabilities = [1 / len(perms)] * len(perms)
+        # perms = list(itertools.permutations(self.candidates.names)) -- Did not use this as the number of permutations increases exponentially with the number of candidates
 
         # Randomly sample n permutations based on the probabilities
-        random_sampling = random.choices(perms, probabilities, k=n)
+        results = []
+
+        while len(results) < n:
+            choix = random.sample(self.candidates.names, len(self.candidates.names))  # Generate a random permutation
+            results.append(tuple(choix))
 
         # Creating an object containing the choices
-        agents_choices = Counter(random_sampling)
+        agents_choices = Counter(results)
 
         agents = []
         i = 0
@@ -84,10 +84,9 @@ class Election:
         return agents
 
 class ScoreVoting(Election):
-    def __init__(self, candidates, agents, score_vector, allow_ties=True, num_winners=1):
+    def __init__(self, candidates, agents, score_vector, num_winners=1):
         super().__init__(candidates, agents)
         self.score_vector = score_vector
-        self.allow_ties = allow_ties
         self.num_winners = num_winners
 
     def calculate_results(self):
@@ -105,7 +104,7 @@ class ScoreVoting(Election):
 
         return results
 
-    def winners(self):
+    def winners(self, num_winners=0):
         """Returns only the winners of the plurality method.
 
         Returns
@@ -114,11 +113,23 @@ class ScoreVoting(Election):
             A sorted dictionary containing the winners and their respective vote count.
         """
 
+        if num_winners == 0:
+            num_winners = self.num_winners
+        
         results = self.calculate_results()
 
         # Save the results
-        max_value = max(results.values())
-        winners = {key:value for key, value in results.items() if value == max_value}
+        if num_winners == 1:
+            max_value = max(results.values())
+            winners = {key:value for key, value in results.items() if value == max_value}
+
+        else:
+            winners = {}
+            while len(winners)<num_winners:
+                wins = [k for k,v in results.items() if v == max(results.values())]
+                for k in wins:
+                    winners[k] = results[k]
+                    results.pop(k)
 
         return winners
 
@@ -149,11 +160,10 @@ class Plurality(ScoreVoting):
     show_full_results()
         Displays a summary of the full voting results, including each candidate's vote count.
     """
-    def __init__(self, candidates, agents, allow_ties=True, num_winners=1):
+    def __init__(self, candidates, agents, num_winners=1):
         score_vector = np.zeros(len(candidates.names))
         score_vector[0] = 1
         super().__init__(candidates, agents, score_vector)
-        self.allow_ties = allow_ties
         self.num_winners = num_winners
     
     def update_score_vector(self):
@@ -191,11 +201,10 @@ class Borda(ScoreVoting):
     show_full_results()
         Displays a summary of the full voting results, including each candidate's score.
     """
-    def __init__(self, candidates, agents, allow_ties=True, num_winners=1):
+    def __init__(self, candidates, agents, num_winners=1):
         score_vector = list(range(len(candidates.names)))
         score_vector.reverse()
         super().__init__(candidates, agents, score_vector)
-        self.allow_ties = allow_ties
         self.num_winners = num_winners
     
     def update_score_vector(self):
