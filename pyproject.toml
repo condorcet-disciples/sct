@@ -34,4 +34,4 @@ dev = ["pytest"]
 packages = ["sct"]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"  # Restrict to Python versions compatible with NumPy
+python = ">=3.9"  # Restrict to Python versions compatible with NumPy
