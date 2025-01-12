@@ -14,7 +14,7 @@ authors = [
 license = { file = "LICENSE" }
 keywords = ["social choice", "voting", "condorcet", "election"] 
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
@@ -32,3 +32,6 @@ dev = ["pytest"]
 
 [tool.setuptools]
 packages = ["sct"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"  # Restrict to Python versions compatible with NumPy
