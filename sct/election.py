@@ -28,8 +28,22 @@ class Election:
         The list of agents (voters) participating in the election.
     """
     def __init__(self, candidates: Candidates = [], agents: list = []):
-        self.candidates = candidates
-        self.agents = agents
+        if isinstance(candidates, Candidates):
+            self.candidates = candidates
+        elif isinstance(candidates, list):
+            self.candidates = Candidates(candidates)
+        elif isinstance(candidates, int):
+            self.generate_candidates(candidates)
+        else:
+            raise ValueError('Candidates must be a list, an integer or an instance of the Candidates class')
+        
+        if isinstance(agents, list):
+            self.agents = agents
+        elif isinstance(agents, int):
+            self.generate_agents(agents)
+        else:
+            raise ValueError('Agents must be a list or an integer')
+        
 
     def generate_candidates(self, n):
         '''
@@ -161,15 +175,23 @@ class Plurality(ScoreVoting):
         Displays a summary of the full voting results, including each candidate's vote count.
     """
     def __init__(self, candidates, agents, num_winners=1):
-        score_vector = np.zeros(len(candidates.names))
-        score_vector[0] = 1
-        super().__init__(candidates, agents, score_vector)
-        self.num_winners = num_winners
+        Election.__init__(self, candidates, agents)
+        self.update_score_vector()
+        super().__init__(candidates, agents, self.score_vector, num_winners=num_winners)
     
     def update_score_vector(self):
         score_vector = np.zeros(len(self.candidates.names))
         score_vector[0] = 1
         self.score_vector = score_vector
+
+    def generate_candidates(self, n):
+        super().generate_candidates(n)
+        self.update_score_vector()
+    
+    def generate_agents(self, n):
+        super().generate_agents(n)
+        self.update_score_vector()
+
 
 
 class Borda(ScoreVoting):
@@ -202,12 +224,106 @@ class Borda(ScoreVoting):
         Displays a summary of the full voting results, including each candidate's score.
     """
     def __init__(self, candidates, agents, num_winners=1):
-        score_vector = list(range(len(candidates.names)))
-        score_vector.reverse()
-        super().__init__(candidates, agents, score_vector)
-        self.num_winners = num_winners
+        Election.__init__(self, candidates, agents)
+        self.update_score_vector()
+        super().__init__(candidates, agents, self.score_vector, num_winners=num_winners)
     
     def update_score_vector(self):
         score_vector = list(range(len(self.candidates.names)))
         score_vector.reverse()
         self.score_vector = score_vector
+
+    def generate_candidates(self, n):
+        super().generate_candidates(n)
+        self.update_score_vector()
+    
+    def generate_agents(self, n):
+        super().generate_agents(n)
+        self.update_score_vector()
+
+
+class InstantRunoff(ScoreVoting):
+    """Represents an instant-runoff voting system where voters rank candidates in order of preference.
+
+    In the instant-runoff system, the candidate with the fewest first-choice votes is eliminated, 
+    and their votes are redistributed to the remaining candidates based on the next preference. 
+    This process continues until a candidate receives a majority of votes.
+
+    Parameters
+    ----------
+    candidates : Candidates
+        An instance of the `Candidates` class containing the list of candidates.
+    agents : list of Agent
+        A list of `Agent` instances representing the voters in the election.
+
+    Attributes
+    ----------
+    None
+
+    Methods
+    -------
+    calculate_results()
+        Calculates and returns the winning candidate(s) and their total score.
+    show_full_results()
+        Displays a summary of the full voting results, including each candidate's score.
+    """
+    def __init__(self, candidates, agents, num_winners=1):
+        score_vector = np.zeros(len(candidates.names))
+        score_vector[0] = 1
+        super().__init__(candidates, agents, score_vector)
+        self.num_winners = num_winners
+
+    def calculate_results(self):
+        results = {c: 0 for c in (self.candidates.names)}
+
+        # Run the election
+        for agent in self.agents:
+            i = 0
+            for choice in agent.choices:
+                results[choice] += self.score_vector[i] * agent.num_votes
+                i += 1
+
+        # Sorting the results
+        results = dict(sorted(results.items(), key=lambda item: item[1], reverse=True))
+
+        return results
+
+    def winners(self, num_winners=0):
+        """Returns only the winners of the plurality method.
+
+        Returns
+        -------
+        dict
+            A sorted dictionary containing the winners and their respective vote count.
+        """
+
+        if num_winners == 0:
+            num_winners = self.num_winners
+        
+        results = self.calculate_results()
+
+        # Save the results
+        if num_winners == 1:
+            max_value = max(results.values())
+            winners = {key:value for key, value in results.items() if value == max_value}
+
+        else:
+            winners = {}
+            while len(winners)<num_winners:
+                wins = [k for k,v in results.items() if v == max(results.values())]
+                for k in wins:
+                    winners[k] = results[k]
+                    results
+                    results.pop(k)
+
+        return winners
+    
+    def eliminate_candidate(self, candidate):
+        '''
+        Function to eliminate a candidate from the election
+        '''
+        self.candidates.names.remove(candidate)
+        self.update_score_vector()
+        for agent in self.agents:
+            agent.choices = tuple([c for c in agent.choices if c != candidate])
+        return self.candidates.names
