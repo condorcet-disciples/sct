@@ -38,7 +38,10 @@ class Candidates:
         ValueError
             If the candidate already exists in the collection.
         """
-        pass
+        if name.lower() in self.names:
+            raise ValueError(f"Candidate '{name}' already exists.")
+        self.names.append(name.lower())
+        self.names.sort()
 
     def remove_candidate(self, name):
         """Removes a candidate from the collection.
@@ -53,4 +56,6 @@ class Candidates:
         ValueError
             If the candidate is not in the collection.
         """
-        pass
+        if name.lower() not in self.names:
+            raise ValueError(f"Candidate '{name}' not found.")
+        self.names.remove(name.lower())

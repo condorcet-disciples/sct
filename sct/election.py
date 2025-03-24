@@ -37,8 +37,8 @@ class Election:
         else:
             raise ValueError('Candidates must be a list, an integer or an instance of the Candidates class')
         
-        if isinstance(agents, list):
-            self.agents = agents
+        if isinstance(agents, list) and all(isinstance(agent, Agent) for agent in agents):
+            self.agents = agents 
         elif isinstance(agents, int):
             self.generate_agents(agents)
         else:
@@ -82,16 +82,16 @@ class Election:
         results = []
 
         while len(results) < n:
-            choix = random.sample(self.candidates.names, len(self.candidates.names))  # Generate a random permutation
-            results.append(tuple(choix))
+            choice = random.sample(self.candidates.names, len(self.candidates.names))  # Generate a random permutation
+            results.append(tuple(choice))
 
         # Creating an object containing the choices
         agents_choices = Counter(results)
 
         agents = []
         i = 0
-        for choix in agents_choices.items():
-            agents.append(Agent(name=f'Agent_{i}', choices=choix[0], num_votes=choix[1]))
+        for choice in agents_choices.items():
+            agents.append(Agent(name=f'Agent_{i}', choices=choice[0], num_votes=choice[1]))
             i += 1
         
         self.agents = agents
@@ -119,7 +119,7 @@ class ScoreVoting(Election):
         return results
 
     def winners(self, num_winners=0):
-        """Returns only the winners of the plurality method.
+        """Returns only the winners of a score voting election.
 
         Returns
         -------
