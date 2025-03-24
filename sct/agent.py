@@ -36,7 +36,7 @@ class Agent:
     def __init__(self, name=None, num_votes=1, choices=None):
         self.name = name
         self.num_votes = num_votes
-        self.choices = [choice.lower() for choice in choices]
+        self.choices = [choice.lower() for choice in choices] if choices else []
 
     def set_preferences(self, choices: list):
         """ Defines or updates the preference order for the agent based on a list of candidate choices.
@@ -56,4 +56,3 @@ class Agent:
 
         return self.choices
     
-    # add choice_matrix

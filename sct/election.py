@@ -30,15 +30,17 @@ class Election:
     def __init__(self, candidates: Candidates = [], agents: list = []):
         if isinstance(candidates, Candidates):
             self.candidates = candidates
-        elif isinstance(candidates, list):
+        elif isinstance(candidates, list) and all(isinstance(c, str) for c in candidates):
             self.candidates = Candidates(candidates)
         elif isinstance(candidates, int):
             self.generate_candidates(candidates)
         else:
-            raise ValueError('Candidates must be a list, an integer or an instance of the Candidates class')
+            raise ValueError('Candidates must be a list of strings, an integer or an instance of the Candidates class')
         
         if isinstance(agents, list) and all(isinstance(agent, Agent) for agent in agents):
-            self.agents = agents 
+            # Check if the choices are valid
+            self.invalid_agents = [agent for agent in agents if not all(c in self.candidates.names for c in agent.choices)]
+            self.agents = [agent for agent in agents if agent not in self.invalid_agents]
         elif isinstance(agents, int):
             self.generate_agents(agents)
         else:

@@ -22,8 +22,10 @@ class Candidates:
         Removes a candidate from the collection by name, if the name exists.
     """
     def __init__(self, names: list):
-        # TODO: do error handling ofr iif candidates are not strings
+        if not all(isinstance(name, str) for name in names):
+            raise TypeError("All candidate names must be strings.")
         self.names = [name.lower() for name in names]
+        self.names.sort()
 
     def add_candidate(self, name):
         """Adds a new candidate to the collection.
