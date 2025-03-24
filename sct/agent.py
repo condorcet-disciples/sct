@@ -55,5 +55,4 @@ class Agent:
         self.choices = [choice.lower() for choice in choices]
 
         return self.choices
-    
-    # add choice_matrix
+
