@@ -7,3 +7,5 @@
   and then use decorators to create othe methods
 
   -Add multiple winners for plurality
+  -Maybe we should not take lower of candidates and agents nameaz
+  

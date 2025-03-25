@@ -104,6 +104,10 @@ class ScoreVoting(Election):
         super().__init__(candidates, agents)
         self.score_vector = score_vector
         self.num_winners = num_winners
+        if len(self.score_vector) != len(candidates.names):
+            raise ValueError('Score vector must have the same length as the number of candidates')
+        if num_winners < 1 or num_winners > len(candidates.names):
+            raise ValueError('Number of winners must be at least 1 and at most the number of candidates')
 
     def calculate_results(self):
         results = {c: 0 for c in (self.candidates.names)}
@@ -127,6 +131,10 @@ class ScoreVoting(Election):
         -------
         dict
             A sorted dictionary containing the winners and their respective vote count.
+        
+        Notes
+        -----
+        In case of a tie, the function will return all tied candidates.
         """
 
         if num_winners == 0:
@@ -141,7 +149,7 @@ class ScoreVoting(Election):
 
         else:
             winners = {}
-            while len(winners)<num_winners:
+            while len(winners) < num_winners:
                 wins = [k for k,v in results.items() if v == max(results.values())]
                 for k in wins:
                     winners[k] = results[k]
