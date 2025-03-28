@@ -268,62 +268,38 @@ class InstantRunoff(ScoreVoting):
         Displays a summary of the full voting results, including each candidate's score.
     """
     def __init__(self, candidates, agents, num_winners=1):
-        score_vector = np.zeros(len(candidates.names))
-        score_vector[0] = 1
-        super().__init__(candidates, agents, score_vector)
-        self.num_winners = num_winners
-
-    def calculate_results(self):
-        results = {c: 0 for c in (self.candidates.names)}
-
-        # Run the election
-        for agent in self.agents:
-            i = 0
-            for choice in agent.choices:
-                results[choice] += self.score_vector[i] * agent.num_votes
-                i += 1
-
-        # Sorting the results
-        results = dict(sorted(results.items(), key=lambda item: item[1], reverse=True))
-
-        return results
-
-    def winners(self, num_winners=0):
-        """Returns only the winners of the plurality method.
-
-        Returns
-        -------
-        dict
-            A sorted dictionary containing the winners and their respective vote count.
-        """
-
-        if num_winners == 0:
-            num_winners = self.num_winners
-        
-        results = self.calculate_results()
-
-        # Save the results
-        if num_winners == 1:
-            max_value = max(results.values())
-            winners = {key:value for key, value in results.items() if value == max_value}
-
-        else:
-            winners = {}
-            while len(winners)<num_winners:
-                wins = [k for k,v in results.items() if v == max(results.values())]
-                for k in wins:
-                    winners[k] = results[k]
-                    results
-                    results.pop(k)
-
-        return winners
-    
-    def eliminate_candidate(self, candidate):
-        '''
-        Function to eliminate a candidate from the election
-        '''
-        self.candidates.names.remove(candidate)
+        Election.__init__(self, candidates, agents)
         self.update_score_vector()
-        for agent in self.agents:
-            agent.choices = tuple([c for c in agent.choices if c != candidate])
-        return self.candidates.names
+        super().__init__(candidates, agents, self.score_vector, num_winners=num_winners)
+    
+    def update_score_vector(self):
+        score_vector = np.zeros(len(self.candidates.names))
+        score_vector[0] = 1
+        self.score_vector = score_vector
+
+    def generate_candidates(self, n):
+        super().generate_candidates(n)
+        self.update_score_vector()
+    
+    def generate_agents(self, n):
+        super().generate_agents(n)
+        self.update_score_vector()
+
+    def winners(self):
+        results = self.calculate_results()
+        winners = []
+        while len(winners) < self.num_winners:
+            # Check if any candidate has a majority
+            max_value = max(results.values())
+            if max_value > sum(results.values()) / 2:
+                winners.append({key: value for key, value in results.items() if value == max_value})
+            # Eliminate the candidate with the least votes
+            else:
+                min_value = min(results.values())
+                losers = {key: value for key, value in results.items() if value == min_value}
+                for agent in self.agents:
+                    for loser in losers:
+                        if agent.choices[0] == loser:  #change to remove only if the loser is the agent's first choice
+                            agent.choices.remove(loser)
+                results = self.calculate_results()
+        return winners
