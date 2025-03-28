@@ -30,15 +30,17 @@ class Election:
     def __init__(self, candidates: Candidates = [], agents: list = []):
         if isinstance(candidates, Candidates):
             self.candidates = candidates
-        elif isinstance(candidates, list):
+        elif isinstance(candidates, list) and all(isinstance(c, str) for c in candidates):
             self.candidates = Candidates(candidates)
         elif isinstance(candidates, int):
             self.generate_candidates(candidates)
         else:
-            raise ValueError('Candidates must be a list, an integer or an instance of the Candidates class')
+            raise ValueError('Candidates must be a list of strings, an integer or an instance of the Candidates class')
         
-        if isinstance(agents, list):
-            self.agents = agents
+        if isinstance(agents, list) and all(isinstance(agent, Agent) for agent in agents):
+            # Check if the choices are valid
+            self.invalid_agents = [agent for agent in agents if not all(c in self.candidates.names for c in agent.choices)]
+            self.agents = [agent for agent in agents if agent not in self.invalid_agents]
         elif isinstance(agents, int):
             self.generate_agents(agents)
         else:
@@ -82,16 +84,16 @@ class Election:
         results = []
 
         while len(results) < n:
-            choix = random.sample(self.candidates.names, len(self.candidates.names))  # Generate a random permutation
-            results.append(tuple(choix))
+            choice = random.sample(self.candidates.names, len(self.candidates.names))  # Generate a random permutation
+            results.append(tuple(choice))
 
         # Creating an object containing the choices
         agents_choices = Counter(results)
 
         agents = []
         i = 0
-        for choix in agents_choices.items():
-            agents.append(Agent(name=f'Agent_{i}', choices=choix[0], num_votes=choix[1]))
+        for choice in agents_choices.items():
+            agents.append(Agent(name=f'Agent_{i}', choices=choice[0], num_votes=choice[1]))
             i += 1
         
         self.agents = agents
@@ -102,6 +104,10 @@ class ScoreVoting(Election):
         super().__init__(candidates, agents)
         self.score_vector = score_vector
         self.num_winners = num_winners
+        if len(self.score_vector) != len(candidates.names):
+            raise ValueError('Score vector must have the same length as the number of candidates')
+        if num_winners < 1 or num_winners > len(candidates.names):
+            raise ValueError('Number of winners must be at least 1 and at most the number of candidates')
 
     def calculate_results(self):
         results = {c: 0 for c in (self.candidates.names)}
@@ -119,12 +125,16 @@ class ScoreVoting(Election):
         return results
 
     def winners(self, num_winners=0):
-        """Returns only the winners of the plurality method.
+        """Returns only the winners of a score voting election.
 
         Returns
         -------
         dict
             A sorted dictionary containing the winners and their respective vote count.
+        
+        Notes
+        -----
+        In case of a tie, the function will return all tied candidates.
         """
 
         if num_winners == 0:
@@ -139,7 +149,7 @@ class ScoreVoting(Election):
 
         else:
             winners = {}
-            while len(winners)<num_winners:
+            while len(winners) < num_winners:
                 wins = [k for k,v in results.items() if v == max(results.values())]
                 for k in wins:
                     winners[k] = results[k]

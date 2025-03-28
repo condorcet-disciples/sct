@@ -22,8 +22,10 @@ class Candidates:
         Removes a candidate from the collection by name, if the name exists.
     """
     def __init__(self, names: list):
-        # TODO: do error handling ofr iif candidates are not strings
+        if not all(isinstance(name, str) for name in names):
+            raise TypeError("All candidate names must be strings.")
         self.names = [name.lower() for name in names]
+        self.names.sort()
 
     def add_candidate(self, name):
         """Adds a new candidate to the collection.
@@ -38,7 +40,10 @@ class Candidates:
         ValueError
             If the candidate already exists in the collection.
         """
-        pass
+        if name.lower() in self.names:
+            raise ValueError(f"Candidate '{name}' already exists.")
+        self.names.append(name.lower())
+        self.names.sort()
 
     def remove_candidate(self, name):
         """Removes a candidate from the collection.
@@ -53,4 +58,6 @@ class Candidates:
         ValueError
             If the candidate is not in the collection.
         """
-        pass
+        if name.lower() not in self.names:
+            raise ValueError(f"Candidate '{name}' not found.")
+        self.names.remove(name.lower())
