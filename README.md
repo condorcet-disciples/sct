@@ -18,9 +18,11 @@ For backend:
 cd backend
 uvicorn main:app --reload
 ```
+access backend at http://127.0.0.1:8000/
 
 For frontend:
 ```
 cd frontend
 npm start
 ```
+Access frontend at http://localhost:3000/

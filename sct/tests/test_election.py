@@ -89,19 +89,18 @@ def test_scorevoting_calculate_score():
     a = [Agent(name="Alice", choices=["Curie", "Einstein"]), Agent(name="Bob", choices=["Feynman", "Curie"])]
     sv = ScoreVoting(candidates=c, agents=a, score_vector=[1,0,0])
     scores = sv.calculate_results()
-    print(scores)
     assert scores == {"curie": 1, "feynman": 1, "einstein": 0}
 
 def test_scorevoting_calculate_winners():
     c = Candidates(names=["Curie", "Feynman", "Einstein"])
     a = [Agent(name="Alice", choices=["Curie", "Einstein"]), Agent(name="Bob", choices=["Feynman", "Curie"])]
-    sv = ScoreVoting(candidates=c, agents=a, score_vector=[1,0,0])
+    sv = ScoreVoting(candidates=c, agents=a, score_vector=[1,0,0], num_winners=1)
     winners = sv.winners()
     assert winners == {"curie": 1, "feynman": 1}
 
 def test_scorevoting_calculate_winners():
     c = Candidates(names=["Curie", "Feynman", "Einstein"])
-    a = [Agent(name="Alice", choices=["Curie", "Einstein"]), Agent(name="Bob", choices=["Curie", "Feynman"])]
-    sv = ScoreVoting(candidates=c, agents=a, score_vector=[1,0,0])
+    a = [Agent(name="Alice", choices=["Curie", "Einstein"]), Agent(name="Bob", choices=["Feynman", "Einstein"])]
+    sv = ScoreVoting(candidates=c, agents=a, score_vector=[1,0,0], num_winners=2)
     winners = sv.winners()
-    assert winners == {"curie": 2}
+    assert winners == {"curie": 1, "feynman": 1}

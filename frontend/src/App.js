@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="app">
+      <header className="navbar">
+        <div className="logo" onClick={() => (window.location.href = "/")}>
+          🗳️
+        </div>
+        <div className="nav-links">
+          <a href="/about">About</a>
+          <a href="https://github.com/your-repo" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+        </div>
       </header>
+      <main className="main-content">
+        <h1>Election Generator</h1>
+        <p className="subtitle">
+          A tool to create elections and analyze different voting systems
+        </p>
+        <button
+          className="create-btn"
+          onClick={() => window.open("/create", "_blank")}
+        >
+          Create an Election
+        </button>
+      </main>
     </div>
   );
 }

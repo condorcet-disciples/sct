@@ -1,4 +1,5 @@
 fastapi
 uvicorn
+pydantic
 -e ../  # editable install (changes to the code will be reflected in the package without reinstalling)
 # ../ (eventually replace above line with this line)

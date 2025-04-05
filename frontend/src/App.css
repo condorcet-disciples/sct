@@ -1,38 +1,158 @@
-.App {
+/* App.css */
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: white;
+  color: #072ac8;
+}
+
+.app {
   text-align: center;
+  padding: 2rem;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #ccc;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.logo {
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav-links a {
+  margin-left: 1.5rem;
+  color: #072ac8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.main-content {
+  margin-top: 5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+  color: #072ac8;
+}
+
+.create-btn {
+  background-color: #072ac8;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.create-btn:hover {
+  background-color: #0622a0;
+}
+
+.create-elections {
+  max-width: 800px;
+  margin: 2rem auto;
+  text-align: left;
+}
+
+/* Row for adding a new voter */
+.add-voter-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.voter-label,
+.votes-label {
   display: flex;
   flex-direction: column;
+  font-weight: 500;
+}
+
+.voter-label input,
+.votes-label input {
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Candidates */
+.candidate-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.candidate-chip {
+  background-color: #cce0ff;
+  border-radius: 15px;
+  padding: 0.5rem 1rem;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  color: #072ac8;
+  font-weight: 500;
+  max-width: 300px; /* Make narrower */
+  white-space: nowrap; /* Keep text on one line */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.App-link {
-  color: #61dafb;
+.candidate-chip span {
+  margin-left: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Voter sections */
+.voter-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.voter-block ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+/* Narrow, stacked "chips" for voter preferences */
+.voter-block li {
+  background-color: #cce0ff;
+  border-radius: 15px;
+  padding: 0.5rem 1rem;
+  display: block; /* Stack vertically */
+  color: #072ac8;
+  font-weight: 500;
+  cursor: grab;
+  margin-bottom: 0.5rem;
+  max-width: 300px; /* Make narrower */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.drag-arrow {
+  margin-right: 0.5rem;
+  opacity: 0.7;
+}
+
+.results {
+  margin-top: 2rem;
 }
