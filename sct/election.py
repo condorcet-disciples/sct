@@ -104,10 +104,10 @@ class ScoreVoting(Election):
         super().__init__(candidates, agents)
         self.score_vector = score_vector
         self.num_winners = num_winners
-        if len(self.score_vector) != len(candidates.names):
-            raise ValueError('Score vector must have the same length as the number of candidates')
-        if num_winners < 1 or num_winners > len(candidates.names):
-            raise ValueError('Number of winners must be at least 1 and at most the number of candidates')
+        # if len(self.score_vector) != len(candidates.names):
+        #     raise ValueError('Score vector must have the same length as the number of candidates')
+        # if num_winners < 1 or num_winners > len(candidates.names):
+        #     raise ValueError('Number of winners must be at least 1 and at most the number of candidates')
 
     def calculate_results(self):
         results = {c: 0 for c in (self.candidates.names)}
@@ -307,6 +307,7 @@ class InstantRunoff(ScoreVoting):
             else:
                 min_value = min(results.values())
                 losers = {key: value for key, value in results.items() if value == min_value}
+                print(losers) # debug
                 for agent in self.agents:
                     for loser in losers:
                         if agent.choices[0] == loser:  #change to remove only if the loser is the agent's first choice
