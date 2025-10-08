@@ -1,5 +1,5 @@
 import pytest
 from sct.agent import Agent
 
-def bullshit_test():
+def test_bs():
     assert 1==1
