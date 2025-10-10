@@ -29,6 +29,4 @@ to see outcomes based on plurality or Borda count rules. It allows for customiza
 such as allowing ties or setting different weight increments in the Borda method.
 """
 
-from .agent import *
-from .candidates import *
-from .election import *
+from .elections import *
