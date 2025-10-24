@@ -137,25 +137,31 @@ class SMCVoting: #Sequential Majoriy Comparison
 # # implement other voting systems accordingly
 
 class InstantRunoff:
-    def __init__(self, population: Population):
+    def __init__(self, population: Population, num_elim_per_round = 1):
         self.population = population
+        self.num_elim_per_round = min(num_elim_per_round, len(population.candidates_list) - 1)
     
     def run_election(self):
         pop_temp = self.population.copy()
         candidates = pop_temp.candidates_list
         agents = pop_temp.agents_list
 
-        for _ in range(len(pop_temp.candidates_list) - 1):
+        for _ in range(len(pop_temp.candidates_list) - self.num_elim_per_round):
             round_plurality = PluralityVoting(pop_temp)
             result = round_plurality.run_election()
-            loser = min(result, key=result.get)
-            candidates.remove(loser)
+            for _ in range(min(self.num_elim_per_round, len(pop_temp.candidates_list) - 1)):
+                loser = min(result, key=result.get)
+                candidates.remove(loser)
+                del result[loser]
             pop_temp = Population(candidates, agents)
         
         del pop_temp
         
         return result
 
+class Plurality_with_Runoff(InstantRunoff):
+    def __init__(self, population: Population):
+        super().__init__(population, num_elim_per_round = len(population.candidates_list) - 2)
 
 
 # class Election:
