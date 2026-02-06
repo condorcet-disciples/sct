@@ -16,7 +16,7 @@ class Candidate:
 # - add, remove
 
 class Agent:
-    def __init__(self, preferences: list[Candidate], num_votes = 1):
+    def __init__(self, preferences, num_votes = 1):
         self.preferences = preferences
         self.num_votes = num_votes
         # checks to verify preference validity
@@ -178,10 +178,19 @@ class Plurality_with_Runoff(InstantRunoff):
 #         return winner
 
 class CardinalSystem():
-    def __init__(self, population: Population):
+    def __init__(self, population: Population, judgment_buckets = 5):
         self.population = population
         self.judgments = [0,1,2,3,4]
+        self.judgment_buckets = judgment_buckets
 
 class MajorityJudgment(CardinalSystem):
     def __init__(self, population: Population):
         super().__init__(population)
+
+    def run_election(self):
+
+
+    
+        
+
+    
