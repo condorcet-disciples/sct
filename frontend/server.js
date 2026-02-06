@@ -253,34 +253,33 @@ app.get('/api/sessions/:sessionId/results', (req, res) => {
         });
     }
     
-    // Calculate average ratings and total scores
-    const results = CANDIDATES.map((candidate, idx) => {
-        const columnName = `candidate_${idx + 1}`;
-        const ratings = votes.map(v => v[columnName]);
-        const totalScore = ratings.reduce((a, b) => a + b, 0);
-        const averageRating = totalScore / votes.length;
-        
-        // Count rating distribution
-        const distribution = [0, 0, 0, 0, 0];
-        ratings.forEach(r => distribution[r]++);
-        
-        return {
-            ...candidate,
-            totalScore,
-            averageRating: Math.round(averageRating * 100) / 100,
-            distribution,
-            voteCount: ratings.length
-        };
+    // Run election
+    const pythonScript = path.join(__dirname, 'scripts', 'run_election.py');
+    const python = spawn('python3', [pythonScript]);
+
+    let output = '';
+    let errorOutput = '';
+
+    python.stdout.on('data', (data) => {
+        output += data.toString();
     });
-    
-    // Sort by average rating (descending)
-    results.sort((a, b) => b.averageRating - a.averageRating);
-    
-    res.json({
-        totalVotes: votes.length,
-        syntheticVotes: votes.filter(v => v.is_synthetic).length,
-        manualVotes: votes.filter(v => !v.is_synthetic).length,
-        results
+
+    python.stderr.on('data', (data) => {
+        errorOutput += data.toString();
+    });
+
+    python.on('close', (code) => {
+        if (code !== 0) {
+            console.error('Election script error:', errorOutput);
+            return res.status(500).json({ error: 'Election script failed', details: errorOutput });
+        }
+        // Return the script output as a string
+        res.json({
+            totalVotes: votes.length,
+            syntheticVotes: votes.filter(v => v.is_synthetic).length,
+            manualVotes: votes.filter(v => !v.is_synthetic).length,
+            electionOutput: output.trim()
+        });
     });
 });
 
