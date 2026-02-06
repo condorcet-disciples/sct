@@ -1,0 +1,10 @@
+
+
+
+
+
+
+Deal with ties and no winners
+Plurality with multiple choices
+Borda with k-winners
+In instant runoff: If several candidates have zero first vote they end up being equally discarded in first round despite one being much superior to the other. Doesn't matter if we're electing only n winners with n not reaching that candidate.

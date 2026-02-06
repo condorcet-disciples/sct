@@ -8,8 +8,7 @@ version = "0.1.0"
 description = "A Python implementation of concepts from social choice theory."
 readme = "README.md"
 authors = [
-    { name = "Miles Weberman", email = "webermanmiles@gmail.com" },
-    { name = "Timothee Boudot", email = "tboudot2@gmail.com" } 
+    { name = "Timothee Boudot", email = "tboudot2@gmail.com" }
 ]
 license = { file = "LICENSE" }
 keywords = ["social choice", "voting", "condorcet", "election"] 
