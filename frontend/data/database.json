@@ -1,0 +1,511 @@
+{
+  "sessions": {
+    "648bd362-99a5-41f7-8ce5-bcda6b45602d": {
+      "id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+      "created_at": "2026-02-06T16:06:57.719Z",
+      "seed": null,
+      "description": "Session created at 06/02/2026, 16:06:57"
+    },
+    "a6b590d1-ffd5-45a8-aaf3-c7c6160491e9": {
+      "id": "a6b590d1-ffd5-45a8-aaf3-c7c6160491e9",
+      "created_at": "2026-02-06T16:11:28.963Z",
+      "seed": null,
+      "description": "Session created at 06/02/2026, 16:11:28"
+    },
+    "993f82ce-bb89-444d-93f6-82bc4843fcc6": {
+      "id": "993f82ce-bb89-444d-93f6-82bc4843fcc6",
+      "created_at": "2026-02-06T16:12:13.342Z",
+      "seed": null,
+      "description": "Session created at 06/02/2026, 16:12:13"
+    },
+    "b0f08848-b98f-43f6-b916-71568296650e": {
+      "id": "b0f08848-b98f-43f6-b916-71568296650e",
+      "created_at": "2026-02-06T16:16:56.949Z",
+      "seed": null,
+      "description": "Session created at 06/02/2026, 16:16:56"
+    },
+    "5b1f7c3f-6fde-4c6b-8760-6e28188d4905": {
+      "id": "5b1f7c3f-6fde-4c6b-8760-6e28188d4905",
+      "created_at": "2026-02-06T16:18:45.514Z",
+      "seed": null,
+      "description": "Session created at 06/02/2026, 16:18:45"
+    },
+    "370e54df-f17b-4d9d-921c-17fcb7918c1b": {
+      "id": "370e54df-f17b-4d9d-921c-17fcb7918c1b",
+      "created_at": "2026-02-06T16:20:52.128Z",
+      "seed": null,
+      "description": "Session created at 06/02/2026, 16:20:52"
+    }
+  },
+  "votes": {
+    "648bd362-99a5-41f7-8ce5-bcda6b45602d": [
+      {
+        "id": 1,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "1c6e3b53-6c4a-468e-abae-d5772fcacfac",
+        "is_synthetic": 0,
+        "candidate_1": 0,
+        "candidate_2": 2,
+        "candidate_3": 3,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:07:25.903Z"
+      },
+      {
+        "id": 2,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "67d73728-47c2-494c-ba89-f41cd1cf5a94",
+        "is_synthetic": 0,
+        "candidate_1": 2,
+        "candidate_2": 2,
+        "candidate_3": 2,
+        "candidate_4": 4,
+        "created_at": "2026-02-06T16:07:50.715Z"
+      },
+      {
+        "id": 3,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_0",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 4,
+        "candidate_3": 0,
+        "candidate_4": 2,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 4,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_1",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 3,
+        "candidate_3": 3,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 5,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_2",
+        "is_synthetic": 1,
+        "candidate_1": 3,
+        "candidate_2": 1,
+        "candidate_3": 0,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 6,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_3",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 3,
+        "candidate_3": 3,
+        "candidate_4": 4,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 7,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_4",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 3,
+        "candidate_3": 2,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 8,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_5",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 0,
+        "candidate_3": 2,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 9,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_6",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 0,
+        "candidate_3": 4,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 10,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_7",
+        "is_synthetic": 1,
+        "candidate_1": 3,
+        "candidate_2": 1,
+        "candidate_3": 3,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 11,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_8",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 1,
+        "candidate_3": 3,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 12,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_9",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 1,
+        "candidate_3": 2,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:04.085Z"
+      },
+      {
+        "id": 13,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_0",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 2,
+        "candidate_3": 1,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 14,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_1",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 2,
+        "candidate_3": 4,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 15,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_2",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 2,
+        "candidate_3": 2,
+        "candidate_4": 2,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 16,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_3",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 2,
+        "candidate_3": 3,
+        "candidate_4": 4,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 17,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_4",
+        "is_synthetic": 1,
+        "candidate_1": 3,
+        "candidate_2": 2,
+        "candidate_3": 1,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 18,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_5",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 2,
+        "candidate_3": 4,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 19,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_6",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 4,
+        "candidate_3": 3,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 20,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_7",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 2,
+        "candidate_3": 1,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 21,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_8",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 2,
+        "candidate_3": 2,
+        "candidate_4": 2,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 22,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_9",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 1,
+        "candidate_3": 3,
+        "candidate_4": 4,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 23,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_10",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 4,
+        "candidate_3": 3,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 24,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_11",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 2,
+        "candidate_3": 4,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 25,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_12",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 2,
+        "candidate_3": 1,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 26,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_13",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 2,
+        "candidate_3": 4,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 27,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_14",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 2,
+        "candidate_3": 4,
+        "candidate_4": 2,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 28,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_15",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 2,
+        "candidate_3": 3,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 29,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_16",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 1,
+        "candidate_3": 3,
+        "candidate_4": 4,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 30,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_17",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 2,
+        "candidate_3": 2,
+        "candidate_4": 2,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 31,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_18",
+        "is_synthetic": 1,
+        "candidate_1": 3,
+        "candidate_2": 2,
+        "candidate_3": 2,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 32,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_19",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 1,
+        "candidate_3": 3,
+        "candidate_4": 4,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 33,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_20",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 2,
+        "candidate_3": 1,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 34,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_21",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 2,
+        "candidate_3": 4,
+        "candidate_4": 3,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 35,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_22",
+        "is_synthetic": 1,
+        "candidate_1": 0,
+        "candidate_2": 1,
+        "candidate_3": 3,
+        "candidate_4": 4,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 36,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_23",
+        "is_synthetic": 1,
+        "candidate_1": 1,
+        "candidate_2": 2,
+        "candidate_3": 4,
+        "candidate_4": 2,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 37,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_24",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 4,
+        "candidate_3": 3,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 38,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_25",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 2,
+        "candidate_3": 1,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 39,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_26",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 4,
+        "candidate_3": 3,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 40,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_27",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 4,
+        "candidate_3": 3,
+        "candidate_4": 1,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 41,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_28",
+        "is_synthetic": 1,
+        "candidate_1": 4,
+        "candidate_2": 2,
+        "candidate_3": 1,
+        "candidate_4": 0,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      },
+      {
+        "id": 42,
+        "session_id": "648bd362-99a5-41f7-8ce5-bcda6b45602d",
+        "agent_id": "agent_29",
+        "is_synthetic": 1,
+        "candidate_1": 2,
+        "candidate_2": 2,
+        "candidate_3": 2,
+        "candidate_4": 2,
+        "created_at": "2026-02-06T16:08:50.267Z"
+      }
+    ],
+    "a6b590d1-ffd5-45a8-aaf3-c7c6160491e9": [],
+    "993f82ce-bb89-444d-93f6-82bc4843fcc6": [],
+    "b0f08848-b98f-43f6-b916-71568296650e": [],
+    "5b1f7c3f-6fde-4c6b-8760-6e28188d4905": [],
+    "370e54df-f17b-4d9d-921c-17fcb7918c1b": []
+  }
+}
