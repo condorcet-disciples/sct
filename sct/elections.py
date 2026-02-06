@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import itertools
 import copy
 
@@ -19,12 +20,23 @@ class Agent:
     def __init__(self, preferences, num_votes = 1):
         self.preferences = preferences
         self.num_votes = num_votes
+
+        if type(self.preferences) is dict:
+            self.agt_preference_list = list(dict(sorted(self.preferences.items(), key=lambda item: item[1], reverse=True)).keys())
+            self.agt_preference_dict = self.preferences
+        else:
+            self.agt_preference_list = self.preferences
+            self.agt_preference_dict = {}
+            partitioning = 1 / (len(self.preferences) - 1) # to uniformly distribute scores
+            for i, c in enumerate(self.preferences):
+                self.agt_preference_dict[c] = 1 - i * partitioning
+
         # checks to verify preference validity
         # - each candidate appears only once
         # - length of list == length of available candidates
 
     def top_choice(self):
-        return self.preferences[0]
+        return self.agt_preference_list[0]
 
     # do not edit during an election to backtrack individual preferences
 
@@ -34,9 +46,10 @@ class Population:
         self.candidates_list = sorted(candidates_list)
         self.candidates_idx = {candidate: idx for idx, candidate in enumerate(sorted(candidates_list))}
         self.agents_list = agents_list
-        self.preference_list = [[self.candidates_idx[pref] for pref in agent.preferences if pref in candidates_list] for agent in self.agents_list]
+        self.preference_list = [[self.candidates_idx[pref] for pref in agent.agt_preference_list if pref in candidates_list] for agent in self.agents_list]
         self.pref_matrix = self.build_pref_matrix()
         self.overall_matrix = self.build_overall_matrix()
+        self.size = sum([agent.num_votes for agent in agents_list])
 
     # def build_pref_matrix(self):
     #     n = len(self.candidates_list)
@@ -184,13 +197,22 @@ class CardinalSystem():
         self.judgment_buckets = judgment_buckets
 
 class MajorityJudgment(CardinalSystem):
-    def __init__(self, population: Population):
+    def __init__(self, population: Population, majority_threshold=0.5):
         super().__init__(population)
+        self.majority_threshold = majority_threshold
 
     def run_election(self):
-
-
-    
+        num_maj_votes = math.ceil(self.population.size * self.majority_threshold)
+        idx_maj_votes = num_maj_votes - 1
+        prefs = {}
+        for candidate in self.population.candidates_list:
+            prefs[candidate] = []
+        for voter in self.population.agents_list:
+            for candidate in self.population.candidates_list:
+                prefs[candidate] += [voter.agt_preference_dict[candidate]] * voter.num_votes
         
+        for candidate in prefs:
+            prefs[candidate].sort(reverse=True)
+            prefs[candidate] = prefs[candidate][idx_maj_votes]
 
-    
+        return dict(sorted(prefs.items(), key=lambda item: item[1], reverse=True))
