@@ -1,4 +1,3 @@
-
 import numpy as np
 import itertools
 import copy
@@ -52,6 +51,7 @@ class Population:
     #         [self.pref_matrix.sum(axis=axes) for axes in itertools.combinations(
     #             range(self.pref_matrix.ndim), self.pref_matrix.ndim - 1)][::-1]
     #     )
+
     def copy(self):
         return copy.deepcopy(self)
 
@@ -119,7 +119,7 @@ class BordaVoting(VotingSystem):
         # Creating the plurality voting vector
         self.voting_vector = np.array(list(reversed(range(len(self.population.candidates_list)))))
 
-class SMCVoting: #Sequential Majoriy Comparison
+class SMCVoting: #Sequential Majority Comparison
     def __init__(self, population: Population):
         self.population = population
     
@@ -176,3 +176,12 @@ class Plurality_with_Runoff(InstantRunoff):
 #         winner = self.system.run_election(self.population)
 #         print(f"Winner: {winner.name}")
 #         return winner
+
+class CardinalSystem():
+    def __init__(self, population: Population):
+        self.population = population
+        self.judgments = [0,1,2,3,4]
+
+class MajorityJudgment(CardinalSystem):
+    def __init__(self, population: Population):
+        super().__init__(population)
