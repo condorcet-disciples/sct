@@ -18,3 +18,5 @@ You should see this message on your terminal:
 ```
 
 On the frontend, you should see a new session with a session ID.
+
+Periodically, delete `frontend/data/database.json` to delete the data generated during test simulations.
