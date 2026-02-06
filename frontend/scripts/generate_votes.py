@@ -21,7 +21,7 @@ def main():
     parser.add_argument('--strategy', type=str, default='biased', 
                         choices=['random', 'clustered', 'biased'],
                         help='Generation strategy')
-    parser.add_argument('--seed', type=int, default=None, help='Random seed for reproducibility')
+    parser.add_argument('--seed', type=int, default=0, help='Random seed for reproducibility')
     
     args = parser.parse_args()
     

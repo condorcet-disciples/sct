@@ -21,7 +21,7 @@ const numAgentsInput = document.getElementById('numAgents');
 const strategySelect = document.getElementById('strategy');
 const seedInput = document.getElementById('seed');
 const resultsContainer = document.getElementById('resultsContainer');
-const refreshResultsBtn = document.getElementById('refreshResults');
+const showResultsBtn = document.getElementById('showResults');
 const clearVotesBtn = document.getElementById('clearVotesBtn');
 const manualVoteCount = document.getElementById('manualVoteCount');
 const syntheticVoteCount = document.getElementById('syntheticVoteCount');
@@ -273,20 +273,16 @@ async function generateRandomVotes() {
 // Load and display results
 async function loadResults() {
     if (!currentSession) return;
-    
     try {
         const response = await fetch(`${API_BASE}/api/sessions/${currentSession}/results`);
         const data = await response.json();
-        
         // Update vote counts
         manualVoteCount.textContent = data.manualVotes || 0;
         syntheticVoteCount.textContent = data.syntheticVotes || 0;
-        
         if (data.totalVotes === 0) {
             resultsContainer.innerHTML = '<p class="no-results">No votes yet</p>';
             return;
         }
-        
         // Render results
         resultsContainer.innerHTML = data.results.map((result, rank) => `
             <div class="result-card" style="--card-color: ${result.color}">
@@ -303,7 +299,6 @@ async function loadResults() {
                 </div>
             </div>
         `).join('');
-        
     } catch (error) {
         console.error('Failed to load results:', error);
     }
@@ -354,9 +349,15 @@ function setupEventListeners() {
     voteBtn.addEventListener('click', castVote);
     newSessionBtn.addEventListener('click', createNewSession);
     generateBtn.addEventListener('click', generateRandomVotes);
-    refreshResultsBtn.addEventListener('click', loadResults);
+    refreshResultsBtn.addEventListener('click', () => {
+        resultsContainer.style.display = 'block';
+        loadResults();
+    });
     clearVotesBtn.addEventListener('click', clearVotes);
-    
+    showResultsBtn.addEventListener('click', () => {
+        resultsContainer.style.display = 'block';
+        loadResults();
+    });
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey) {
