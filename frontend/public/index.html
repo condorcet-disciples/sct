@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preference Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Preference Simulator</h1>
+            <p class="subtitle">How should we plan transportation around St. Mary's Church?</p>
+        </header>
+
+        <!-- Session Info -->
+        <div class="session-panel" id="sessionPanel">
+            <div class="session-controls">
+                <button class="btn btn-secondary" id="newSessionBtn">New Session</button>
+                <span class="session-info" id="sessionInfo">No active session</span>
+            </div>
+        </div>
+
+        <!-- Main Voting Panel -->
+        <main class="voting-panel">
+            <div class="vote-header">
+                <h2>Cast Your Vote</h2>
+                <p>Rate each option from Strongly Disagree to Strongly Agree</p>
+            </div>
+
+            <!-- Candidates with Sliders -->
+            <div class="candidates-container" id="candidatesContainer">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Vote Button -->
+            <button class="btn btn-vote" id="voteBtn">
+                <span class="btn-icon">✓</span>
+                Vote
+            </button>
+
+            <!-- Vote Counter -->
+            <div class="vote-counter" id="voteCounter">
+                <span class="counter-label">Votes cast:</span>
+                <span class="counter-value" id="manualVoteCount">0</span>
+                <span class="counter-separator">|</span>
+                <span class="counter-label">Synthetic:</span>
+                <span class="counter-value" id="syntheticVoteCount">0</span>
+            </div>
+        </main>
+
+        <!-- Random Generation Panel -->
+        <section class="generation-panel">
+            <h3>🎲 Generate Random Voters</h3>
+            <div class="generation-controls">
+                <div class="input-group">
+                    <label for="numAgents">Number of agents:</label>
+                    <input type="number" id="numAgents" min="1" max="1000" value="10">
+                </div>
+                <div class="input-group">
+                    <label for="strategy">Strategy:</label>
+                    <select id="strategy">
+                        <option value="biased">Biased (Realistic)</option>
+                        <option value="clustered">Clustered</option>
+                        <option value="random">Random</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="seed">Seed (optional):</label>
+                    <input type="number" id="seed" placeholder="For reproducibility">
+                </div>
+                <button class="btn btn-generate" id="generateBtn">
+                    <span class="btn-icon">⚡</span>
+                    Generate
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Panel -->
+        <section class="results-panel" id="resultsPanel">
+            <h3>Results</h3>
+            <div class="results-container" id="resultsContainer">
+                <!-- Dynamically populated -->
+            </div>
+            <button class="btn btn-secondary btn-small" id="refreshResults">Refresh Results</button>
+        </section>
+
+        <!-- Actions Panel -->
+        <section class="actions-panel">
+            <button class="btn btn-danger btn-small" id="clearVotesBtn">Clear All Votes</button>
+        </section>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
