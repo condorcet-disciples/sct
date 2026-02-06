@@ -13,8 +13,7 @@
     --kahoot-purple: #864CBF;
     
     /* Neutrals */
-    --bg-primary: #46178F;
-    --bg-secondary: #2D1459;
+    --bg-primary: #2D1459;
     --bg-card: rgba(255, 255, 255, 0.1);
     --bg-card-hover: rgba(255, 255, 255, 0.15);
     
@@ -24,9 +23,9 @@
     
     /* Spacing */
     --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
+    --spacing-sm: 0.25rem;
     --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
+    --spacing-lg: 1rem;
     --spacing-xl: 2rem;
     
     /* Border Radius */
@@ -51,7 +50,7 @@
 
 body {
     font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    background: var(--bg-primary) 0%;
     min-height: 100vh;
     color: var(--text-primary);
     line-height: 1.5;
@@ -74,7 +73,7 @@ body {
 
 .header h1 {
     font-size: 2.5rem;
-    font-weight: 800;
+    font-weight: 600;
     margin-bottom: var(--spacing-sm);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -142,7 +141,7 @@ body {
 }
 
 .candidate-card {
-    background: linear-gradient(135deg, var(--card-color, var(--kahoot-blue)) 0%, rgba(0, 0, 0, 0.2) 100%);
+    background: linear-gradient(135deg, var(--card-color, rgba(0, 0, 0, 0.2) 100%, var(--kahoot-blue)) 0%);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -166,7 +165,7 @@ body {
 
 .candidate-name {
     font-size: 1.2rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 /* ===== Sliders ===== */
@@ -371,7 +370,7 @@ body {
 
 .generation-panel h3 {
     font-size: 1.2rem;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: var(--spacing-lg);
     text-align: center;
 }
@@ -392,7 +391,7 @@ body {
 .input-group label {
     font-size: 0.85rem;
     color: var(--text-secondary);
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .input-group input,
@@ -403,7 +402,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.75rem;
     outline: none;
     transition: border-color var(--transition-fast);
 }
@@ -418,7 +417,7 @@ body {
 }
 
 .input-group select option {
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
     color: white;
 }
 

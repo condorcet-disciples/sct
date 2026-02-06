@@ -271,43 +271,43 @@ async function generateRandomVotes() {
 }
 
 // Load and display results
-// async function loadResults() {
-//     if (!currentSession) return;
+async function loadResults() {
+    if (!currentSession) return;
     
-//     try {
-//         const response = await fetch(`${API_BASE}/api/sessions/${currentSession}/results`);
-//         const data = await response.json();
+    try {
+        const response = await fetch(`${API_BASE}/api/sessions/${currentSession}/results`);
+        const data = await response.json();
         
-//         // Update vote counts
-//         manualVoteCount.textContent = data.manualVotes || 0;
-//         syntheticVoteCount.textContent = data.syntheticVotes || 0;
+        // Update vote counts
+        manualVoteCount.textContent = data.manualVotes || 0;
+        syntheticVoteCount.textContent = data.syntheticVotes || 0;
         
-//         if (data.totalVotes === 0) {
-//             resultsContainer.innerHTML = '<p class="no-results">No votes yet</p>';
-//             return;
-//         }
+        if (data.totalVotes === 0) {
+            resultsContainer.innerHTML = '<p class="no-results">No votes yet</p>';
+            return;
+        }
         
-//         // Render results
-//         resultsContainer.innerHTML = data.results.map((result, rank) => `
-//             <div class="result-card" style="--card-color: ${result.color}">
-//                 <div class="result-rank">#${rank + 1}</div>
-//                 <div class="result-info">
-//                     <span class="result-emoji">${result.emoji}</span>
-//                     <span class="result-name">${result.name}</span>
-//                 </div>
-//                 <div class="result-stats">
-//                     <div class="result-average">${result.averageRating.toFixed(2)}</div>
-//                     <div class="result-bar-container">
-//                         <div class="result-bar" style="width: ${(result.averageRating / 4) * 100}%"></div>
-//                     </div>
-//                 </div>
-//             </div>
-//         `).join('');
+        // Render results
+        resultsContainer.innerHTML = data.results.map((result, rank) => `
+            <div class="result-card" style="--card-color: ${result.color}">
+                <div class="result-rank">#${rank + 1}</div>
+                <div class="result-info">
+                    <span class="result-emoji">${result.emoji}</span>
+                    <span class="result-name">${result.name}</span>
+                </div>
+                <div class="result-stats">
+                    <div class="result-average">${result.averageRating.toFixed(2)}</div>
+                    <div class="result-bar-container">
+                        <div class="result-bar" style="width: ${(result.averageRating / 4) * 100}%"></div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
         
-//     } catch (error) {
-//         console.error('Failed to load results:', error);
-//     }
-// }
+    } catch (error) {
+        console.error('Failed to load results:', error);
+    }
+}
 
 // Clear all votes
 async function clearVotes() {

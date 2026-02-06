@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Planning Vote</title>
+    <title>Preference Simulator</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +13,8 @@
     <div class="app-container">
         <!-- Header -->
         <header class="header">
-            <h1>🗳️ City Planning Vote</h1>
-            <p class="subtitle">How should we plan transportation in our area?</p>
+            <h1>Preference Simulator</h1>
+            <p class="subtitle">How should we plan transportation around St. Mary's Church?</p>
         </header>
 
         <!-- Session Info -->
@@ -74,7 +74,6 @@
                     <input type="number" id="seed" placeholder="For reproducibility">
                 </div>
                 <button class="btn btn-generate" id="generateBtn">
-                    <span class="btn-icon">⚡</span>
                     Generate
                 </button>
             </div>
@@ -82,7 +81,7 @@
 
         <!-- Results Panel -->
         <section class="results-panel" id="resultsPanel">
-            <h3>📊 Current Results</h3>
+            <h3>Results</h3>
             <div class="results-container" id="resultsContainer">
                 <!-- Dynamically populated -->
             </div>
