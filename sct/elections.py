@@ -114,6 +114,9 @@ class VotingSystem:
             results_dict[candidate] = score
         return dict(sorted(results_dict.items(), key=lambda item: item[1], reverse=True))
 
+    def get_winner(self):
+        return list(self.run_election().keys())[0].name
+
 class PluralityVoting(VotingSystem):
     def __init__(self, population: Population):
         super().__init__(population)
@@ -216,3 +219,6 @@ class MajorityJudgment(CardinalSystem):
             prefs[candidate] = prefs[candidate][idx_maj_votes]
 
         return dict(sorted(prefs.items(), key=lambda item: item[1], reverse=True))
+    
+    def get_winner(self):
+        return list(self.run_election().keys())[0].name

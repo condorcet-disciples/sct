@@ -6,6 +6,7 @@ Run an election using the votes in the backend.
 import sys
 import os
 import json
+from string import ascii_lowercase
 
 # Add parent directory to path to import sct module
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -24,19 +25,23 @@ def main():
     
     # create candidates
     # TODO: create this from the agents data instead of hardcoding 4 candidates
-    candidate_list = [
-        sct.Candidate('candidate_' + str(ii)) for ii in range(1,5)
-    ]
+    # candidate_list = [
+    #     sct.Candidate(f'candidate_{str(ii)}') for ii in range(1,5)
+    # ]
+    candidate_list = []
+    for ii in range(4):
+        globals()[ascii_lowercase[ii]] = sct.Candidate(f'candidate_{str(ii+1)}')
+        candidate_list.append(globals()[ascii_lowercase[ii]])
 
     # create agents
     agents = data['votes'][latest_session]
     agent_list = []
     for agent in agents:
         agent_list.append(sct.Agent({
-            'candidate_1': agent.get('candidate_1', 2),
-            'candidate_2': agent.get('candidate_2', 2),
-            'candidate_3': agent.get('candidate_3', 2),
-            'candidate_4': agent.get('candidate_4', 2)
+            a: agent.get('candidate_1', 2),
+            b: agent.get('candidate_2', 2),
+            c: agent.get('candidate_3', 2),
+            d: agent.get('candidate_4', 2)
             }))
         
     # run election
