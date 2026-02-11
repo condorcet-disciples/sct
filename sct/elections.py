@@ -106,8 +106,12 @@ class VotingSystem:
         self.population = population
         self.voting_vector = []
 
-    def run_election(self) -> dict:
-        results_vector = self.population.overall_matrix @ self.voting_vector
+    def run_election(self, voting_vector = None) -> dict:
+        
+        if voting_vector is None:
+            voting_vector = self.voting_vector
+
+        results_vector = self.population.overall_matrix @ voting_vector
         results_dict = {}
         for candidate, score in zip(self.population.candidates_list,
                                     results_vector):
@@ -116,6 +120,7 @@ class VotingSystem:
 
     def get_winner(self):
         return list(self.run_election().keys())[0].name
+
 
 class PluralityVoting(VotingSystem):
     def __init__(self, population: Population):
@@ -127,6 +132,8 @@ class PluralityVoting(VotingSystem):
 
     # def run_election(self, population: Population) -> Candidate:
     #     return 0
+    def disappointment_index(self):
+        return self.run_election(voting_vector= 1 - self.voting_vector)
 
 class BordaVoting(VotingSystem):
     def __init__(self, population: Population):
@@ -134,6 +141,9 @@ class BordaVoting(VotingSystem):
         
         # Creating the plurality voting vector
         self.voting_vector = np.array(list(reversed(range(len(self.population.candidates_list)))))
+
+    def disappointment_index(self):
+        return self.run_election(voting_vector= sorted(self.voting_vector))
 
 class SMCVoting: #Sequential Majority Comparison
     def __init__(self, population: Population):
@@ -204,7 +214,7 @@ class MajorityJudgment(CardinalSystem):
         super().__init__(population)
         self.majority_threshold = majority_threshold
 
-    def run_election(self):
+    def run_election(self, reverse=True):
         num_maj_votes = math.ceil(self.population.size * self.majority_threshold)
         idx_maj_votes = num_maj_votes - 1
         prefs = {}
@@ -215,10 +225,13 @@ class MajorityJudgment(CardinalSystem):
                 prefs[candidate] += [voter.agt_preference_dict[candidate]] * voter.num_votes
         
         for candidate in prefs:
-            prefs[candidate].sort(reverse=True)
+            prefs[candidate].sort(reverse=reverse)
             prefs[candidate] = prefs[candidate][idx_maj_votes]
 
         return dict(sorted(prefs.items(), key=lambda item: item[1], reverse=True))
     
     def get_winner(self):
         return list(self.run_election().keys())[0].name
+
+    def disappointment_index(self):
+        return run_election(reverse=False)
