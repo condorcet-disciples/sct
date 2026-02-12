@@ -48,10 +48,10 @@ let database = loadDatabase();
 
 // Candidates configuration
 const CANDIDATES = [
-    { id: 1, name: 'Business-as-usual', emoji: '🏢', color: '#E21B3C' },
-    { id: 2, name: 'Slow cars', emoji: '🐌', color: '#1368CE' },
-    { id: 3, name: 'Few cars', emoji: '🚗', color: '#D89E00' },
-    { id: 4, name: 'No cars', emoji: '🚶', color: '#26890C' }
+    { id: 1, name: 'Business-as-usual', emoji: '🚗💨', color: '#E21B3C' },
+    { id: 2, name: 'Slow cars', emoji: '🚗', color: '#1368CE' },
+    { id: 3, name: 'Few cars', emoji: '🚶', color: '#D89E00' },
+    { id: 4, name: 'No cars', emoji: '⛔', color: '#26890C' }
 ];
 
 const RATING_LABELS = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
@@ -249,13 +249,13 @@ app.get('/api/sessions/:sessionId/results', (req, res) => {
             totalVotes: 0, 
             syntheticVotes: 0,
             manualVotes: 0,
-            results: CANDIDATES.map(c => ({ ...c, averageRating: 0, totalScore: 0 }))
+            results: {}
         });
     }
     
-    // Run election
+    // Run election with session ID
     const pythonScript = path.join(__dirname, 'scripts', 'run_election.py');
-    const python = spawn('python3', [pythonScript]);
+    const python = spawn('python3', [pythonScript, '--session-id', sessionId]);
 
     let output = '';
     let errorOutput = '';
@@ -273,13 +273,19 @@ app.get('/api/sessions/:sessionId/results', (req, res) => {
             console.error('Election script error:', errorOutput);
             return res.status(500).json({ error: 'Election script failed', details: errorOutput });
         }
-        // Return the script output as a string
-        res.json({
-            totalVotes: votes.length,
-            syntheticVotes: votes.filter(v => v.is_synthetic).length,
-            manualVotes: votes.filter(v => !v.is_synthetic).length,
-            electionOutput: output.trim()
-        });
+        
+        try {
+            const electionResults = JSON.parse(output);
+            res.json({
+                totalVotes: votes.length,
+                syntheticVotes: votes.filter(v => v.is_synthetic).length,
+                manualVotes: votes.filter(v => !v.is_synthetic).length,
+                results: electionResults
+            });
+        } catch (e) {
+            console.error('Failed to parse election results:', e, output);
+            res.status(500).json({ error: 'Failed to parse election results' });
+        }
     });
 });
 
