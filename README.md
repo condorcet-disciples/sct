@@ -38,6 +38,6 @@ Place your preferences. Choose from Strongly Disagree to Strongly Agree. Cast yo
 View the winner candidates based on the Plurality, Borda, and Majority Judgement voting systems. Note the rank of the winner candidate(s) in the other systems to understand how they can differ.
 ![alt text][results-view]
 
-[candidate-view]: https://github.com/condorcet-disciples/sct/blob/5979bf8fe8389a4540a6701908aa47e1c63c89a5/docs/screenshots/candidate-view.png
+[candidate-view]: https://github.com/condorcet-disciples/sct/blob/e5355f22bb1d4007919d401fd9cbe129e8ee042b/docs/screenshots/candidate-view.png
 [voting-view]: https://github.com/condorcet-disciples/sct/blob/5979bf8fe8389a4540a6701908aa47e1c63c89a5/docs/screenshots/voting-view.png
 [results-view]: https://github.com/condorcet-disciples/sct/blob/5979bf8fe8389a4540a6701908aa47e1c63c89a5/docs/screenshots/results-view.png
