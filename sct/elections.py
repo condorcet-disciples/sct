@@ -234,4 +234,4 @@ class MajorityJudgment(CardinalSystem):
         return list(self.run_election().keys())[0].name
 
     def disappointment_index(self):
-        return run_election(reverse=False)
+        return self.run_election(reverse=False)
