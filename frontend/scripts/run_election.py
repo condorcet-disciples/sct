@@ -21,6 +21,17 @@ def dict_to_serializable(d):
     return {c.name: float(v) for c, v in d.items()}
 
 
+def get_rank(scores_dict, winner_name):
+    """Get the rank (1st, 2nd, 3rd, 4th) of a candidate in a scores dict."""
+    # Sort by score descending
+    sorted_candidates = sorted(scores_dict.items(), key=lambda x: x[1], reverse=True)
+    suffixes = ["1st", "2nd", "3rd", "4th", "5th", "6th"]
+    for i, (name, _) in enumerate(sorted_candidates):
+        if name == winner_name:
+            return suffixes[i] if i < len(suffixes) else f"{i+1}th"
+    return "N/A"
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--session-id', required=False, help='Session ID to process')
@@ -73,22 +84,38 @@ def main():
     borda = sct.BordaVoting(pop)
     majority = sct.MajorityJudgment(pop)
 
-    # Build results
+    # Get scores for each system (serialized)
+    plurality_scores = dict_to_serializable(plurality.run_election())
+    borda_scores = dict_to_serializable(borda.run_election())
+    majority_scores = dict_to_serializable(majority.run_election())
+
+    # Get winners
+    plurality_winner = plurality.get_winner()
+    borda_winner = borda.get_winner()
+    majority_winner = majority.get_winner()
+
+    # Build results with cross-system rankings
     results = {
         "plurality": {
-            "winner": plurality.get_winner(),
-            "scores": dict_to_serializable(plurality.run_election()),
-            "disappointment": dict_to_serializable(plurality.disappointment_index())
+            "winner": plurality_winner,
+            "scores": plurality_scores,
+            "disappointment": dict_to_serializable(plurality.disappointment_index()),
+            "winner_rank_in_borda": get_rank(borda_scores, plurality_winner),
+            "winner_rank_in_majority": get_rank(majority_scores, plurality_winner)
         },
         "borda": {
-            "winner": borda.get_winner(),
-            "scores": dict_to_serializable(borda.run_election()),
-            "disappointment": dict_to_serializable(borda.disappointment_index())
+            "winner": borda_winner,
+            "scores": borda_scores,
+            "disappointment": dict_to_serializable(borda.disappointment_index()),
+            "winner_rank_in_plurality": get_rank(plurality_scores, borda_winner),
+            "winner_rank_in_majority": get_rank(majority_scores, borda_winner)
         },
         "majority": {
-            "winner": majority.get_winner(),
-            "scores": dict_to_serializable(majority.run_election()),
-            "disappointment": dict_to_serializable(majority.disappointment_index())
+            "winner": majority_winner,
+            "scores": majority_scores,
+            "disappointment": dict_to_serializable(majority.disappointment_index()),
+            "winner_rank_in_plurality": get_rank(plurality_scores, majority_winner),
+            "winner_rank_in_borda": get_rank(borda_scores, majority_winner)
         }
     }
 

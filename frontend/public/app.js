@@ -324,14 +324,14 @@ function renderResults(data) {
     const pluralityWinner = findCandidate(results.plurality?.winner);
     const bordaWinner = findCandidate(results.borda?.winner);
     const majorityWinner = findCandidate(results.majority?.winner);
-    
-    // Format disappointment index
-    function formatDisappointment(di) {
-        if (!di || typeof di !== 'object') return 'N/A';
-        return Object.entries(di)
-            .map(([k, v]) => `${k.replace('candidate_', 'C')}: ${v.toFixed(1)}`)
-            .join(', ');
-    }
+
+    // Get cross-system ranks
+    const pluralityRankInBorda = results.plurality?.winner_rank_in_borda || 'N/A';
+    const pluralityRankInMajority = results.plurality?.winner_rank_in_majority || 'N/A';
+    const bordaRankInPlurality = results.borda?.winner_rank_in_plurality || 'N/A';
+    const bordaRankInMajority = results.borda?.winner_rank_in_majority || 'N/A';
+    const majorityRankInPlurality = results.majority?.winner_rank_in_plurality || 'N/A';
+    const majorityRankInBorda = results.majority?.winner_rank_in_borda || 'N/A';
     
     resultsContainer.innerHTML = `
         <!-- Plurality Column -->
@@ -341,14 +341,20 @@ function renderResults(data) {
                 <span class="winner-emoji">${pluralityWinner?.emoji || '?'}</span>
                 <span class="winner-name">${pluralityWinner?.name || 'Unknown'}</span>
             </div>
-            <div class="disappointment-section">
-                <div class="disappointment-index">
-                    <div class="disappointment-label">Disappointment Index</div>
-                    <div class="disappointment-value">${formatDisappointment(results.plurality?.disappointment)}</div>
+            <div class="rank-grid">
+                <div class="rank-row rank-header">
+                    <span class="rank-label">Plurality Rank:</span>
+                    <span class="rank-value winner-badge">1st</span>
+                </div>
+                <div class="rank-row">
+                    <span class="rank-label">Borda Rank:</span>
+                    <span class="rank-value">${bordaRankInPlurality}</span>
+                </div>
+                <div class="rank-row">
+                    <span class="rank-label">Majority Judgment Rank:</span>
+                    <span class="rank-value">${majorityRankInPlurality}</span>
                 </div>
             </div>
-            <div class="disappointment-placeholder"></div>
-            <div class="disappointment-placeholder"></div>
         </div>
         
         <!-- Borda Column -->
@@ -358,14 +364,20 @@ function renderResults(data) {
                 <span class="winner-emoji">${bordaWinner?.emoji || '?'}</span>
                 <span class="winner-name">${bordaWinner?.name || 'Unknown'}</span>
             </div>
-            <div class="disappointment-placeholder"></div>
-            <div class="disappointment-section">
-                <div class="disappointment-index">
-                    <div class="disappointment-label">Disappointment Index</div>
-                    <div class="disappointment-value">${formatDisappointment(results.borda?.disappointment)}</div>
+            <div class="rank-grid">
+                <div class="rank-row">
+                    <span class="rank-label">Plurality Rank:</span>
+                    <span class="rank-value">${pluralityRankInBorda}</span>
+                </div>
+                <div class="rank-row rank-header">
+                    <span class="rank-label">Borda Rank:</span>
+                    <span class="rank-value winner-badge">1st</span>
+                </div>
+                <div class="rank-row">
+                    <span class="rank-label">Majority Judgment Rank:</span>
+                    <span class="rank-value">${majorityRankInBorda}</span>
                 </div>
             </div>
-            <div class="disappointment-placeholder"></div>
         </div>
         
         <!-- Majority Judgment Column -->
@@ -375,12 +387,18 @@ function renderResults(data) {
                 <span class="winner-emoji">${majorityWinner?.emoji || '?'}</span>
                 <span class="winner-name">${majorityWinner?.name || 'Unknown'}</span>
             </div>
-            <div class="disappointment-placeholder"></div>
-            <div class="disappointment-placeholder"></div>
-            <div class="disappointment-section">
-                <div class="disappointment-index">
-                    <div class="disappointment-label">Disappointment Index</div>
-                    <div class="disappointment-value">${formatDisappointment(results.majority?.disappointment)}</div>
+            <div class="rank-grid">
+                <div class="rank-row">
+                    <span class="rank-label">Plurality Rank:</span>
+                    <span class="rank-value">${pluralityRankInMajority}</span>
+                </div>
+                <div class="rank-row">
+                    <span class="rank-label">Borda Rank:</span>
+                    <span class="rank-value">${bordaRankInMajority}</span>
+                </div>
+                <div class="rank-row rank-header">
+                    <span class="rank-label">Majority Judgment Rank:</span>
+                    <span class="rank-value winner-badge">1st</span>
                 </div>
             </div>
         </div>
