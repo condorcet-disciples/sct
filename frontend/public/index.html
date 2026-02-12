@@ -17,81 +17,98 @@
             <p class="subtitle">How should we plan transportation around St. Mary's Church?</p>
         </header>
 
-        <!-- Session Info -->
-        <div class="session-panel" id="sessionPanel">
-            <div class="session-controls">
-                <button class="btn btn-secondary" id="newSessionBtn">New Session</button>
-                <span class="session-info" id="sessionInfo">No active session</span>
-            </div>
-        </div>
+        <!-- Tab Navigation -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="candidates">Candidates</button>
+            <button class="tab-btn" data-tab="voting">Voting</button>
+            <button class="tab-btn" data-tab="results">Results</button>
+        </nav>
 
-        <!-- Main Voting Panel -->
-        <main class="voting-panel">
-            <div class="vote-header">
-                <h2>Cast Your Vote</h2>
-                <p>Rate each option from Strongly Disagree to Strongly Agree</p>
-            </div>
-
-            <!-- Candidates with Sliders -->
-            <div class="candidates-container" id="candidatesContainer">
+        <!-- Tab 1: Candidates -->
+        <section class="tab-content active" id="tab-candidates">
+            <div class="candidates-grid" id="candidatesGrid">
                 <!-- Dynamically populated -->
             </div>
+        </section>
 
-            <!-- Vote Button -->
-            <button class="btn btn-vote" id="voteBtn">
-                <span class="btn-icon">✓</span>
-                Vote
-            </button>
-
+        <!-- Tab 2: Voting -->
+        <section class="tab-content" id="tab-voting">
             <!-- Vote Counter -->
-            <div class="vote-counter" id="voteCounter">
-                <span class="counter-label">Votes cast:</span>
+            <div class="vote-counter">
+                <span class="counter-label">Total votes:</span>
+                <span class="counter-value" id="totalVoteCount">0</span>
+                <span class="counter-separator">|</span>
+                <span class="counter-label">Manual:</span>
                 <span class="counter-value" id="manualVoteCount">0</span>
                 <span class="counter-separator">|</span>
                 <span class="counter-label">Synthetic:</span>
                 <span class="counter-value" id="syntheticVoteCount">0</span>
             </div>
-        </main>
 
-        <!-- Random Generation Panel -->
-        <section class="generation-panel">
-            <h3>🎲 Generate Random Voters</h3>
-            <div class="generation-controls">
-                <div class="input-group">
-                    <label for="numAgents">Number of agents:</label>
-                    <input type="number" id="numAgents" min="1" max="1000" value="10">
+            <!-- Voting Table -->
+            <div class="voting-section">
+                <table class="voting-table">
+                    <thead>
+                        <tr>
+                            <th class="candidate-col">Candidate</th>
+                            <th>SD</th>
+                            <th>D</th>
+                            <th>N</th>
+                            <th>A</th>
+                            <th>SA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="votingTableBody">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+
+                <button class="btn btn-vote" id="voteBtn">Vote</button>
+            </div>
+
+            <!-- Random Generation Panel -->
+            <div class="generation-panel">
+                <h3>Generate Random Voters</h3>
+                <div class="generation-controls">
+                    <div class="input-group">
+                        <label for="numAgents">Agents</label>
+                        <input type="number" id="numAgents" min="1" max="1000" value="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="strategy">Strategy</label>
+                        <select id="strategy">
+                            <option value="biased">Biased</option>
+                            <option value="clustered">Clustered</option>
+                            <option value="random">Random</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="seed">Seed</label>
+                        <input type="number" id="seed" value="0">
+                    </div>
+                    <button class="btn btn-generate" id="generateBtn">Generate</button>
                 </div>
-                <div class="input-group">
-                    <label for="strategy">Strategy:</label>
-                    <select id="strategy">
-                        <option value="biased">Biased (Realistic)</option>
-                        <option value="clustered">Clustered</option>
-                        <option value="random">Random</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="seed">Seed (optional):</label>
-                    <input type="number" id="seed" placeholder="For reproducibility">
-                </div>
-                <button class="btn btn-generate" id="generateBtn">
-                    <span class="btn-icon">⚡</span>
-                    Generate
-                </button>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions-panel">
+                <button class="btn btn-secondary" id="newSessionBtn">New Session</button>
+                <button class="btn btn-danger" id="clearVotesBtn">Clear Votes</button>
             </div>
         </section>
 
-        <!-- Results Panel -->
-        <section class="results-panel" id="resultsPanel">
-            <h3>Results</h3>
-            <button class="btn btn-secondary btn-small" id="showResults">Show Results</button>
-            <div class="results-container" id="resultsContainer">
-                <!-- Dynamically populated -->
+        <!-- Tab 3: Results -->
+        <section class="tab-content" id="tab-results">
+            <!-- Vote Counter -->
+            <div class="vote-counter">
+                <span class="counter-label">Total votes:</span>
+                <span class="counter-value" id="resultsVoteCount">0</span>
             </div>
-        </section>
 
-        <!-- Actions Panel -->
-        <section class="actions-panel">
-            <button class="btn btn-danger btn-small" id="clearVotesBtn">Clear All Votes</button>
+            <!-- Results Grid -->
+            <div class="results-grid" id="resultsContainer">
+                <p class="no-results">No votes have been cast yet</p>
+            </div>
         </section>
 
         <!-- Toast Notifications -->

@@ -1,0 +1,18 @@
+{
+  "candidate_1": {
+    "title": "Business-as-usual",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.\n\nMaintain current transportation policies with minimal changes to existing infrastructure. Focus on road maintenance and incremental improvements to traffic flow."
+  },
+  "candidate_2": {
+    "title": "Slow cars",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod nisi eu risus tincidunt, vel consequat magna fermentum. Integer nec odio praesent libero.\n\nImplement speed reduction measures including 20mph zones, traffic calming features, and speed bumps. Prioritize pedestrian safety while maintaining car access."
+  },
+  "candidate_3": {
+    "title": "Few cars",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.\n\nReduce car usage through congestion charges, limited parking, and improved public transport. Encourage cycling and walking with dedicated infrastructure."
+  },
+  "candidate_4": {
+    "title": "No cars",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.\n\nCreate a fully pedestrianized zone around St. Mary's Church. All vehicle access restricted except emergency services. Maximum priority for walking, cycling, and public spaces."
+  }
+}

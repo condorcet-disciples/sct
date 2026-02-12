@@ -1,37 +1,45 @@
 /**
  * SCT Voting Frontend Application
- * Kahoot-inspired minimalistic design
+ * Minimalist design with three tabs
  */
 
-// API Configuration
 const API_BASE = '';
 
 // State
 let currentSession = null;
 let candidates = [];
+let candidateDescriptions = {};
 let ratingLabels = [];
 
 // DOM Elements
-const candidatesContainer = document.getElementById('candidatesContainer');
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+const candidatesGrid = document.getElementById('candidatesGrid');
+const votingTableBody = document.getElementById('votingTableBody');
 const voteBtn = document.getElementById('voteBtn');
 const newSessionBtn = document.getElementById('newSessionBtn');
-const sessionInfo = document.getElementById('sessionInfo');
 const generateBtn = document.getElementById('generateBtn');
 const numAgentsInput = document.getElementById('numAgents');
 const strategySelect = document.getElementById('strategy');
 const seedInput = document.getElementById('seed');
-const resultsContainer = document.getElementById('resultsContainer');
-const showResultsBtn = document.getElementById('showResults');
 const clearVotesBtn = document.getElementById('clearVotesBtn');
+const resultsContainer = document.getElementById('resultsContainer');
+const toastContainer = document.getElementById('toastContainer');
+
+// Vote count elements
+const totalVoteCount = document.getElementById('totalVoteCount');
 const manualVoteCount = document.getElementById('manualVoteCount');
 const syntheticVoteCount = document.getElementById('syntheticVoteCount');
-const toastContainer = document.getElementById('toastContainer');
+const resultsVoteCount = document.getElementById('resultsVoteCount');
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', async () => {
     await loadCandidates();
+    await loadCandidateDescriptions();
     await createNewSession();
     setupEventListeners();
+    renderCandidatesGrid();
+    renderVotingTable();
 });
 
 // Load candidates from API
@@ -41,28 +49,66 @@ async function loadCandidates() {
         const data = await response.json();
         candidates = data.candidates;
         ratingLabels = data.ratingLabels;
-        renderCandidates();
     } catch (error) {
         console.error('Failed to load candidates:', error);
         showToast('Failed to load candidates', 'error');
     }
 }
 
-// Render candidate sliders
-function renderCandidates() {
-    candidatesContainer.innerHTML = '';
+// Load candidate descriptions from JSON
+async function loadCandidateDescriptions() {
+    try {
+        const response = await fetch(`${API_BASE}/data/candidates.json`);
+        candidateDescriptions = await response.json();
+    } catch (error) {
+        console.error('Failed to load candidate descriptions:', error);
+    }
+}
+
+// Render candidates grid (Tab 1 - flip cards)
+function renderCandidatesGrid() {
+    candidatesGrid.innerHTML = '';
     
-    candidates.forEach((candidate, index) => {
-        const card = document.createElement('div');
-        card.className = 'candidate-card';
-        card.style.setProperty('--card-color', candidate.color);
+    candidates.forEach(candidate => {
+        const desc = candidateDescriptions[`candidate_${candidate.id}`] || {};
         
+        const card = document.createElement('div');
+        card.className = 'candidate-flip-card';
         card.innerHTML = `
-            <div class="candidate-header">
-                <span class="candidate-emoji">${candidate.emoji}</span>
-                <span class="candidate-name">${candidate.name}</span>
+            <div class="candidate-flip-inner">
+                <div class="candidate-front">
+                    <span class="candidate-emoji-large">${candidate.emoji}</span>
+                    <span class="candidate-name-large">${candidate.name}</span>
+                </div>
+                <div class="candidate-back">
+                    <span class="candidate-back-title">${desc.title || candidate.name}</span>
+                    <p class="candidate-back-desc">${desc.description || 'No description available.'}</p>
+                </div>
             </div>
-            <div class="slider-container">
+        `;
+        
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+        
+        candidatesGrid.appendChild(card);
+    });
+}
+
+// Render voting table (Tab 2)
+function renderVotingTable() {
+    votingTableBody.innerHTML = '';
+    
+    candidates.forEach(candidate => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="candidate-col">
+                <div class="candidate-cell">
+                    <span class="candidate-emoji">${candidate.emoji}</span>
+                    <span class="candidate-name">${candidate.name}</span>
+                </div>
+            </td>
+            <td colspan="5" class="slider-cell">
                 <input type="range" 
                        class="vote-slider" 
                        id="slider-${candidate.id}" 
@@ -70,53 +116,39 @@ function renderCandidates() {
                        max="4" 
                        value="2"
                        data-candidate-id="${candidate.id}">
-                <div class="slider-labels">
-                    ${ratingLabels.map((label, i) => `
-                        <span class="slider-label ${i === 2 ? 'active' : ''}" data-value="${i}">${getShortLabel(label)}</span>
-                    `).join('')}
-                </div>
-                <div class="current-rating" id="rating-${candidate.id}">Neutral</div>
-            </div>
+                <div class="slider-value" id="value-${candidate.id}">Neutral</div>
+            </td>
         `;
         
-        candidatesContainer.appendChild(card);
+        votingTableBody.appendChild(row);
         
-        // Setup slider event
-        const slider = card.querySelector('.vote-slider');
-        slider.addEventListener('input', (e) => updateSliderUI(e.target, candidate.id));
+        const slider = row.querySelector('.vote-slider');
+        slider.addEventListener('input', (e) => updateSliderValue(e.target, candidate.id));
     });
 }
 
-// Get short label for mobile
-function getShortLabel(label) {
-    const shorts = {
-        'Strongly Disagree': 'SD',
-        'Disagree': 'D',
-        'Neutral': 'N',
-        'Agree': 'A',
-        'Strongly Agree': 'SA'
-    };
-    return shorts[label] || label;
-}
-
-// Update slider UI on change
-function updateSliderUI(slider, candidateId) {
+// Update slider value display
+function updateSliderValue(slider, candidateId) {
     const value = parseInt(slider.value);
-    const ratingDisplay = document.getElementById(`rating-${candidateId}`);
-    const card = slider.closest('.candidate-card');
-    const labels = card.querySelectorAll('.slider-label');
-    
-    // Update rating text
-    ratingDisplay.textContent = ratingLabels[value];
-    
-    // Update active label
-    labels.forEach((label, i) => {
-        label.classList.toggle('active', i === value);
+    const valueDisplay = document.getElementById(`value-${candidateId}`);
+    valueDisplay.textContent = ratingLabels[value];
+}
+
+// Tab switching
+function switchTab(tabName) {
+    tabButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
     });
     
-    // Update slider color intensity
-    const intensity = (value / 4) * 100;
-    slider.style.setProperty('--fill-percent', `${(value / 4) * 100}%`);
+    tabContents.forEach(content => {
+        const isActive = content.id === `tab-${tabName}`;
+        content.classList.toggle('active', isActive);
+    });
+    
+    // Load results when switching to results tab
+    if (tabName === 'results') {
+        loadResults();
+    }
 }
 
 // Create a new voting session
@@ -132,14 +164,9 @@ async function createNewSession() {
         
         const data = await response.json();
         currentSession = data.sessionId;
-        sessionInfo.textContent = `Session: ${currentSession.slice(0, 8)}...`;
         
         // Reset vote counts
-        manualVoteCount.textContent = '0';
-        syntheticVoteCount.textContent = '0';
-        
-        // Clear results
-        resultsContainer.innerHTML = '<p class="no-results">No votes yet</p>';
+        updateVoteCounts(0, 0);
         
         // Reset sliders
         resetSliders();
@@ -157,9 +184,18 @@ function resetSliders() {
         const slider = document.getElementById(`slider-${candidate.id}`);
         if (slider) {
             slider.value = 2;
-            updateSliderUI(slider, candidate.id);
+            updateSliderValue(slider, candidate.id);
         }
     });
+}
+
+// Update vote counts across tabs
+function updateVoteCounts(manual, synthetic) {
+    const total = manual + synthetic;
+    if (totalVoteCount) totalVoteCount.textContent = total;
+    if (manualVoteCount) manualVoteCount.textContent = manual;
+    if (syntheticVoteCount) syntheticVoteCount.textContent = synthetic;
+    if (resultsVoteCount) resultsVoteCount.textContent = total;
 }
 
 // Cast a vote
@@ -169,7 +205,6 @@ async function castVote() {
         return;
     }
     
-    // Collect preferences
     const preferences = candidates.map(candidate => {
         const slider = document.getElementById(`slider-${candidate.id}`);
         return parseInt(slider.value);
@@ -177,49 +212,31 @@ async function castVote() {
     
     try {
         voteBtn.disabled = true;
-        voteBtn.innerHTML = '<span class="btn-icon">⏳</span> Voting...';
+        voteBtn.textContent = 'Voting...';
         
         const response = await fetch(`${API_BASE}/api/sessions/${currentSession}/votes`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                preferences,
-                isSynthetic: false
-            })
+            body: JSON.stringify({ preferences, isSynthetic: false })
         });
         
-        if (!response.ok) {
-            throw new Error('Failed to cast vote');
-        }
+        if (!response.ok) throw new Error('Failed to cast vote');
         
-        // Update vote count
-        manualVoteCount.textContent = parseInt(manualVoteCount.textContent) + 1;
+        // Update counts
+        const manual = parseInt(manualVoteCount.textContent) + 1;
+        const synthetic = parseInt(syntheticVoteCount.textContent);
+        updateVoteCounts(manual, synthetic);
         
-        // Show success animation
-        showVoteSuccess();
-        
-        // Reset sliders
+        showToast('Vote cast successfully!', 'success');
         resetSliders();
-        
-        // Refresh results
-        await loadResults();
         
     } catch (error) {
         console.error('Failed to cast vote:', error);
         showToast('Failed to cast vote', 'error');
     } finally {
         voteBtn.disabled = false;
-        voteBtn.innerHTML = '<span class="btn-icon">✓</span> Vote';
+        voteBtn.textContent = 'Vote';
     }
-}
-
-// Show vote success animation
-function showVoteSuccess() {
-    showToast('Vote cast successfully! 🎉', 'success');
-    
-    // Add pulse animation to vote button
-    voteBtn.classList.add('success-pulse');
-    setTimeout(() => voteBtn.classList.remove('success-pulse'), 500);
 }
 
 // Generate random votes
@@ -231,77 +248,143 @@ async function generateRandomVotes() {
     
     const numAgents = parseInt(numAgentsInput.value) || 10;
     const strategy = strategySelect.value;
-    const seed = seedInput.value ? parseInt(seedInput.value) : null;
+    const seed = seedInput.value ? parseInt(seedInput.value) : 0;
     
     try {
         generateBtn.disabled = true;
-        generateBtn.innerHTML = '<span class="btn-icon">⏳</span> Generating...';
+        generateBtn.textContent = 'Generating...';
         
         const response = await fetch(`${API_BASE}/api/sessions/${currentSession}/generate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                numAgents,
-                strategy,
-                seed
-            })
+            body: JSON.stringify({ numAgents, strategy, seed })
         });
         
-        if (!response.ok) {
-            throw new Error('Failed to generate votes');
-        }
+        if (!response.ok) throw new Error('Failed to generate votes');
         
         const data = await response.json();
         
-        // Update synthetic vote count
-        syntheticVoteCount.textContent = parseInt(syntheticVoteCount.textContent) + data.generated;
+        // Update counts
+        const manual = parseInt(manualVoteCount.textContent);
+        const synthetic = parseInt(syntheticVoteCount.textContent) + data.generated;
+        updateVoteCounts(manual, synthetic);
         
-        showToast(`Generated ${data.generated} random votes! 🎲`, 'success');
-        
-        // Refresh results
-        await loadResults();
+        showToast(`Generated ${data.generated} votes!`, 'success');
         
     } catch (error) {
         console.error('Failed to generate votes:', error);
-        showToast('Failed to generate votes. Make sure Python is set up.', 'error');
+        showToast('Failed to generate votes. Check Python setup.', 'error');
     } finally {
         generateBtn.disabled = false;
-        generateBtn.innerHTML = '<span class="btn-icon">⚡</span> Generate';
+        generateBtn.textContent = 'Generate';
     }
 }
 
 // Load and display results
 async function loadResults() {
     if (!currentSession) return;
+    
     try {
         const response = await fetch(`${API_BASE}/api/sessions/${currentSession}/results`);
         const data = await response.json();
+        
         // Update vote counts
-        manualVoteCount.textContent = data.manualVotes || 0;
-        syntheticVoteCount.textContent = data.syntheticVotes || 0;
+        const manual = data.manualVotes || 0;
+        const synthetic = data.syntheticVotes || 0;
+        updateVoteCounts(manual, synthetic);
+        
         if (data.totalVotes === 0) {
-            resultsContainer.innerHTML = '<p class="no-results">No votes yet</p>';
+            resultsContainer.innerHTML = '<p class="no-results">No votes have been cast yet</p>';
             return;
         }
-        // Render results
-        resultsContainer.innerHTML = data.results.map((result, rank) => `
-            <div class="result-card" style="--card-color: ${result.color}">
-                <div class="result-rank">#${rank + 1}</div>
-                <div class="result-info">
-                    <span class="result-emoji">${result.emoji}</span>
-                    <span class="result-name">${result.name}</span>
-                </div>
-                <div class="result-stats">
-                    <div class="result-average">${result.averageRating.toFixed(2)}</div>
-                    <div class="result-bar-container">
-                        <div class="result-bar" style="width: ${(result.averageRating / 4) * 100}%"></div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        
+        // Render results with winners and disappointment indices
+        renderResults(data);
+        
     } catch (error) {
         console.error('Failed to load results:', error);
+        resultsContainer.innerHTML = '<p class="no-results">Failed to load results</p>';
     }
+}
+
+// Render results grid
+function renderResults(data) {
+    const results = data.results || {};
+    
+    // Helper to find candidate by name pattern
+    function findCandidate(winnerName) {
+        if (!winnerName) return null;
+        return candidates.find(c => 
+            winnerName.toLowerCase().includes(c.name.toLowerCase()) ||
+            winnerName.toLowerCase().includes(`candidate_${c.id}`)
+        );
+    }
+    
+    // Get winners
+    const pluralityWinner = findCandidate(results.plurality?.winner);
+    const bordaWinner = findCandidate(results.borda?.winner);
+    const majorityWinner = findCandidate(results.majority?.winner);
+    
+    // Format disappointment index
+    function formatDisappointment(di) {
+        if (!di || typeof di !== 'object') return 'N/A';
+        return Object.entries(di)
+            .map(([k, v]) => `${k.replace('candidate_', 'C')}: ${v.toFixed(1)}`)
+            .join(', ');
+    }
+    
+    resultsContainer.innerHTML = `
+        <!-- Plurality Column -->
+        <div class="results-column">
+            <h3>Plurality</h3>
+            <div class="winner-card">
+                <span class="winner-emoji">${pluralityWinner?.emoji || '?'}</span>
+                <span class="winner-name">${pluralityWinner?.name || 'Unknown'}</span>
+            </div>
+            <div class="disappointment-section">
+                <div class="disappointment-index">
+                    <div class="disappointment-label">Disappointment Index</div>
+                    <div class="disappointment-value">${formatDisappointment(results.plurality?.disappointment)}</div>
+                </div>
+            </div>
+            <div class="disappointment-placeholder"></div>
+            <div class="disappointment-placeholder"></div>
+        </div>
+        
+        <!-- Borda Column -->
+        <div class="results-column">
+            <h3>Borda</h3>
+            <div class="winner-card">
+                <span class="winner-emoji">${bordaWinner?.emoji || '?'}</span>
+                <span class="winner-name">${bordaWinner?.name || 'Unknown'}</span>
+            </div>
+            <div class="disappointment-placeholder"></div>
+            <div class="disappointment-section">
+                <div class="disappointment-index">
+                    <div class="disappointment-label">Disappointment Index</div>
+                    <div class="disappointment-value">${formatDisappointment(results.borda?.disappointment)}</div>
+                </div>
+            </div>
+            <div class="disappointment-placeholder"></div>
+        </div>
+        
+        <!-- Majority Judgment Column -->
+        <div class="results-column">
+            <h3>Majority Judgment</h3>
+            <div class="winner-card">
+                <span class="winner-emoji">${majorityWinner?.emoji || '?'}</span>
+                <span class="winner-name">${majorityWinner?.name || 'Unknown'}</span>
+            </div>
+            <div class="disappointment-placeholder"></div>
+            <div class="disappointment-placeholder"></div>
+            <div class="disappointment-section">
+                <div class="disappointment-index">
+                    <div class="disappointment-label">Disappointment Index</div>
+                    <div class="disappointment-value">${formatDisappointment(results.majority?.disappointment)}</div>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 // Clear all votes
@@ -315,11 +398,9 @@ async function clearVotes() {
             method: 'DELETE'
         });
         
-        manualVoteCount.textContent = '0';
-        syntheticVoteCount.textContent = '0';
-        resultsContainer.innerHTML = '<p class="no-results">No votes yet</p>';
-        
+        updateVoteCounts(0, 0);
         showToast('All votes cleared', 'info');
+        
     } catch (error) {
         console.error('Failed to clear votes:', error);
         showToast('Failed to clear votes', 'error');
@@ -334,10 +415,8 @@ function showToast(message, type = 'info') {
     
     toastContainer.appendChild(toast);
     
-    // Trigger animation
     setTimeout(() => toast.classList.add('show'), 10);
     
-    // Remove after delay
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
@@ -346,22 +425,24 @@ function showToast(message, type = 'info') {
 
 // Setup event listeners
 function setupEventListeners() {
+    // Tab navigation
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+    
+    // Voting actions
     voteBtn.addEventListener('click', castVote);
     newSessionBtn.addEventListener('click', createNewSession);
     generateBtn.addEventListener('click', generateRandomVotes);
-    refreshResultsBtn.addEventListener('click', () => {
-        resultsContainer.style.display = 'block';
-        loadResults();
-    });
     clearVotesBtn.addEventListener('click', clearVotes);
-    showResultsBtn.addEventListener('click', () => {
-        resultsContainer.style.display = 'block';
-        loadResults();
-    });
+    
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey) {
-            castVote();
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab?.dataset.tab === 'voting') {
+                castVote();
+            }
         }
     });
 }

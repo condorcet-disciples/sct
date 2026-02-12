@@ -1,48 +1,36 @@
 /**
  * SCT Voting Frontend Styles
- * Kahoot-inspired minimalistic design
+ * Minimalist design with purple accents
  */
 
 /* ===== CSS Variables ===== */
 :root {
-    /* Kahoot Colors */
-    --kahoot-red: #E21B3C;
-    --kahoot-blue: #1368CE;
-    --kahoot-yellow: #D89E00;
-    --kahoot-green: #26890C;
-    --kahoot-purple: #864CBF;
+    --purple: #864CBF;
+    --purple-light: #a77bd6;
+    --purple-dark: #6a3a99;
+    --white: #FFFFFF;
+    --black: #1a1a1a;
+    --gray-light: #f5f5f5;
+    --gray: #e0e0e0;
+    --gray-dark: #666;
     
-    /* Neutrals */
-    --bg-primary: #2D1459;
-    --bg-card: rgba(255, 255, 255, 0.1);
-    --bg-card-hover: rgba(255, 255, 255, 0.15);
-    
-    --text-primary: #FFFFFF;
-    --text-secondary: rgba(255, 255, 255, 0.8);
-    --text-muted: rgba(255, 255, 255, 0.6);
-    
-    /* Spacing */
     --spacing-xs: 0.25rem;
-    --spacing-sm: 0.25rem;
+    --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
-    --spacing-lg: 1rem;
+    --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
     
-    /* Border Radius */
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
-    --radius-xl: 20px;
     
-    /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-normal: 250ms ease;
+    --transition: 200ms ease;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* ===== Reset & Base ===== */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -50,15 +38,15 @@
 
 body {
     font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg-primary) 0%;
+    background: var(--white);
     min-height: 100vh;
-    color: var(--text-primary);
+    color: var(--black);
     line-height: 1.5;
 }
 
 /* ===== Layout ===== */
 .app-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     padding: var(--spacing-lg);
     min-height: 100vh;
@@ -68,178 +56,293 @@ body {
 .header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-lg) 0;
 }
 
 .header h1 {
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin-bottom: var(--spacing-sm);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.subtitle {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    font-weight: 400;
-}
-
-/* ===== Session Panel ===== */
-.session-panel {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    backdrop-filter: blur(10px);
-}
-
-.session-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-}
-
-.session-info {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    font-family: monospace;
-}
-
-/* ===== Voting Panel ===== */
-.voting-panel {
-    background: var(--bg-card);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
-    margin-bottom: var(--spacing-lg);
-    backdrop-filter: blur(10px);
-}
-
-.vote-header {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-}
-
-.vote-header h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
+    color: var(--purple);
     margin-bottom: var(--spacing-xs);
 }
 
-.vote-header p {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
+.subtitle {
+    font-size: 1rem;
+    color: var(--gray-dark);
+    font-weight: 400;
 }
 
-/* ===== Candidate Cards ===== */
-.candidates-container {
+/* ===== Tab Navigation ===== */
+.tab-nav {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    border-bottom: 2px solid var(--gray);
+    padding-bottom: var(--spacing-sm);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-dark);
+    cursor: pointer;
+    transition: all var(--transition);
+    margin-bottom: -calc(var(--spacing-sm) + 2px);
+}
+
+.tab-btn:hover {
+    color: var(--purple);
+}
+
+.tab-btn.active {
+    color: var(--purple);
+    border-bottom-color: var(--purple);
+}
+
+/* ===== Tab Content ===== */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Candidates Grid (Tab 1) ===== */
+.candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.candidate-flip-card {
+    perspective: 1000px;
+    height: 200px;
+    cursor: pointer;
+}
+
+.candidate-flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.candidate-flip-card.flipped .candidate-flip-inner {
+    transform: rotateY(180deg);
+}
+
+.candidate-front, .candidate-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--radius-lg);
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+}
+
+.candidate-front {
+    background: var(--white);
+    border: 2px solid var(--purple);
+    transition: box-shadow var(--transition);
+}
+
+.candidate-flip-card:hover .candidate-front {
+    box-shadow: var(--shadow-hover);
+}
+
+.candidate-back {
+    background: var(--purple);
+    color: var(--white);
+    transform: rotateY(180deg);
+    text-align: center;
+    overflow-y: auto;
+}
+
+.candidate-emoji-large {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.candidate-name-large {
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--black);
+}
+
+.candidate-back-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+
+.candidate-back-desc {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* ===== Vote Counter ===== */
+.vote-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--gray-light);
+    border-radius: var(--radius-md);
+}
+
+.counter-label {
+    font-size: 0.9rem;
+    color: var(--gray-dark);
+}
+
+.counter-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--purple);
+}
+
+.counter-separator {
+    color: var(--gray);
+    margin: 0 var(--spacing-xs);
+}
+
+/* ===== Voting Table (Tab 2) ===== */
+.voting-section {
     margin-bottom: var(--spacing-xl);
 }
 
-.candidate-card {
-    background: linear-gradient(135deg, var(--card-color, rgba(0, 0, 0, 0.2) 100%, var(--kahoot-blue)) 0%);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+.voting-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--spacing-lg);
 }
 
-.candidate-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+.voting-table th,
+.voting-table td {
+    padding: var(--spacing-md);
+    text-align: center;
+    border-bottom: 1px solid var(--gray);
 }
 
-.candidate-header {
+.voting-table th {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-dark);
+}
+
+/* Align slider labels with slider positions */
+.voting-table th:nth-child(2) { /* SD */
+    text-align: left;
+    padding-left: 0;
+}
+
+.voting-table th:nth-child(3) { /* D */
+    text-align: left;
+}
+
+.voting-table th:nth-child(4) { /* N */
+    text-align: center;
+}
+
+.voting-table th:nth-child(5) { /* A */
+    text-align: right;
+}
+
+.voting-table th:nth-child(6) { /* SA */
+    text-align: right;
+    padding-right: 0;
+}
+
+.voting-table th.candidate-col {
+    text-align: left;
+    width: 40%;
+}
+
+.voting-table td.candidate-col {
+    text-align: left;
+}
+
+.candidate-cell {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
+    gap: var(--spacing-sm);
 }
 
 .candidate-emoji {
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .candidate-name {
-    font-size: 1.2rem;
     font-weight: 600;
+    color: var(--black);
 }
 
-/* ===== Sliders ===== */
-.slider-container {
+/* Slider in table */
+.slider-cell {
     position: relative;
 }
 
 .vote-slider {
     width: 100%;
-    height: 12px;
+    height: 8px;
     -webkit-appearance: none;
     appearance: none;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
+    background: var(--gray);
+    border-radius: 4px;
     outline: none;
     cursor: pointer;
-    margin-bottom: var(--spacing-sm);
 }
 
 .vote-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 28px;
-    height: 28px;
-    background: white;
+    width: 20px;
+    height: 20px;
+    background: var(--purple);
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    transition: transform var(--transition-fast);
+    transition: transform var(--transition);
 }
 
 .vote-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
 }
 
 .vote-slider::-moz-range-thumb {
-    width: 28px;
-    height: 28px;
-    background: white;
+    width: 20px;
+    height: 20px;
+    background: var(--purple);
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.slider-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: var(--spacing-xs);
-}
-
-.slider-label {
+.slider-value {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--purple);
     font-weight: 600;
-    transition: color var(--transition-fast), transform var(--transition-fast);
-}
-
-.slider-label.active {
-    color: white;
-    transform: scale(1.1);
-}
-
-.current-rating {
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: white;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius-sm);
-    display: inline-block;
     margin-top: var(--spacing-xs);
-    width: 100%;
 }
 
 /* ===== Buttons ===== */
@@ -250,14 +353,12 @@ body {
     gap: var(--spacing-sm);
     padding: var(--spacing-md) var(--spacing-xl);
     border: none;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     font-family: inherit;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition-fast);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    transition: all var(--transition);
 }
 
 .btn:disabled {
@@ -267,257 +368,187 @@ body {
 
 .btn-vote {
     width: 100%;
-    background: linear-gradient(135deg, var(--kahoot-green) 0%, #1e7209 100%);
-    color: white;
-    font-size: 1.3rem;
-    padding: var(--spacing-lg) var(--spacing-xl);
-    box-shadow: 0 4px 15px rgba(38, 137, 12, 0.4);
+    background: var(--purple);
+    color: var(--white);
+    font-size: 1.1rem;
+    padding: var(--spacing-md) var(--spacing-xl);
 }
 
 .btn-vote:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(38, 137, 12, 0.5);
-}
-
-.btn-vote:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-.btn-vote.success-pulse {
-    animation: pulse 0.5s ease;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-}
-
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    backdrop-filter: blur(5px);
-}
-
-.btn-secondary:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--purple-dark);
 }
 
 .btn-generate {
-    background: linear-gradient(135deg, var(--kahoot-blue) 0%, #0d4fa3 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(19, 104, 206, 0.4);
+    background: var(--purple);
+    color: var(--white);
 }
 
 .btn-generate:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(19, 104, 206, 0.5);
+    background: var(--purple-dark);
+}
+
+.btn-secondary {
+    background: var(--white);
+    color: var(--purple);
+    border: 2px solid var(--purple);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--gray-light);
 }
 
 .btn-danger {
-    background: linear-gradient(135deg, var(--kahoot-red) 0%, #b31530 100%);
-    color: white;
+    background: var(--white);
+    color: #E21B3C;
+    border: 2px solid #E21B3C;
 }
 
 .btn-danger:hover:not(:disabled) {
-    background: linear-gradient(135deg, #ff2244 0%, var(--kahoot-red) 100%);
-}
-
-.btn-small {
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.85rem;
-}
-
-.btn-icon {
-    font-size: 1.2em;
-}
-
-/* ===== Vote Counter ===== */
-.vote-counter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-md);
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-}
-
-.counter-label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.counter-value {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: white;
-}
-
-.counter-separator {
-    color: var(--text-muted);
-    margin: 0 var(--spacing-sm);
+    background: #fef0f2;
 }
 
 /* ===== Generation Panel ===== */
 .generation-panel {
-    background: var(--bg-card);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
+    background: var(--gray-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
     margin-bottom: var(--spacing-lg);
-    backdrop-filter: blur(10px);
 }
 
 .generation-panel h3 {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
+    margin-bottom: var(--spacing-md);
+    color: var(--black);
 }
 
 .generation-controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: flex;
     gap: var(--spacing-md);
-    align-items: end;
+    align-items: flex-end;
+    flex-wrap: wrap;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
+    flex: 1;
+    min-width: 100px;
 }
 
 .input-group label {
     font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 400;
+    color: var(--gray-dark);
+    font-weight: 500;
 }
 
 .input-group input,
 .input-group select {
     padding: var(--spacing-sm) var(--spacing-md);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--gray);
     border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    background: var(--white);
+    color: var(--black);
     font-family: inherit;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     outline: none;
-    transition: border-color var(--transition-fast);
+    transition: border-color var(--transition);
 }
 
 .input-group input:focus,
 .input-group select:focus {
-    border-color: var(--kahoot-blue);
-}
-
-.input-group input::placeholder {
-    color: var(--text-muted);
-}
-
-.input-group select option {
-    background: var(--bg-primary);
-    color: white;
-}
-
-/* ===== Results Panel ===== */
-.results-panel {
-    background: var(--bg-card);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
-    margin-bottom: var(--spacing-lg);
-    backdrop-filter: blur(10px);
-}
-
-.results-panel h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
-}
-
-.results-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-}
-
-.no-results {
-    text-align: center;
-    color: var(--text-muted);
-    padding: var(--spacing-xl);
-}
-
-.result-card {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    background: linear-gradient(135deg, var(--card-color, var(--kahoot-blue)) 0%, rgba(0, 0, 0, 0.3) 100%);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-md) var(--spacing-lg);
-    transition: transform var(--transition-fast);
-}
-
-.result-card:hover {
-    transform: translateX(5px);
-}
-
-.result-rank {
-    font-size: 1.5rem;
-    font-weight: 800;
-    min-width: 50px;
-    text-align: center;
-}
-
-.result-info {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    flex: 1;
-}
-
-.result-emoji {
-    font-size: 1.5rem;
-}
-
-.result-name {
-    font-weight: 600;
-}
-
-.result-stats {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--spacing-xs);
-    min-width: 100px;
-}
-
-.result-average {
-    font-size: 1.3rem;
-    font-weight: 800;
-}
-
-.result-bar-container {
-    width: 100%;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.result-bar {
-    height: 100%;
-    background: white;
-    border-radius: 4px;
-    transition: width var(--transition-normal);
+    border-color: var(--purple);
 }
 
 /* ===== Actions Panel ===== */
 .actions-panel {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+/* ===== Results Grid (Tab 3) ===== */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.results-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.results-column h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: var(--spacing-md);
     text-align: center;
-    margin-bottom: var(--spacing-xl);
+}
+
+.winner-card {
+    background: var(--white);
+    border: 2px solid var(--purple);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.winner-emoji {
+    font-size: 3rem;
+    display: block;
+}
+
+.winner-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--black);
+    display: block;
+}
+
+.disappointment-section {
+    width: 100%;
+    min-height: 80px;
+}
+
+.disappointment-index {
+    background: var(--gray-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    text-align: center;
+}
+
+.disappointment-label {
+    font-size: 0.75rem;
+    color: var(--gray-dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.disappointment-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--purple);
+}
+
+.disappointment-placeholder {
+    height: 80px;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--gray-dark);
+    padding: var(--spacing-xl);
+    font-size: 1.1rem;
 }
 
 /* ===== Toast Notifications ===== */
@@ -533,13 +564,13 @@ body {
 
 .toast {
     padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    color: white;
+    border-radius: var(--radius-md);
+    color: var(--white);
     font-weight: 600;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow);
     transform: translateX(100%);
     opacity: 0;
-    transition: all var(--transition-normal);
+    transition: all var(--transition);
 }
 
 .toast.show {
@@ -548,101 +579,59 @@ body {
 }
 
 .toast-success {
-    background: linear-gradient(135deg, var(--kahoot-green) 0%, #1e7209 100%);
+    background: #26890C;
 }
 
 .toast-error {
-    background: linear-gradient(135deg, var(--kahoot-red) 0%, #b31530 100%);
+    background: #E21B3C;
 }
 
 .toast-warning {
-    background: linear-gradient(135deg, var(--kahoot-yellow) 0%, #b88700 100%);
+    background: #D89E00;
 }
 
 .toast-info {
-    background: linear-gradient(135deg, var(--kahoot-blue) 0%, #0d4fa3 100%);
+    background: var(--purple);
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 600px) {
-    .app-container {
-        padding: var(--spacing-md);
-    }
-    
-    .header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .voting-panel,
-    .generation-panel,
-    .results-panel {
-        padding: var(--spacing-lg);
-    }
-    
-    .candidate-card {
-        padding: var(--spacing-md);
-    }
-    
-    .candidate-name {
-        font-size: 1rem;
-    }
-    
-    .generation-controls {
+@media (max-width: 700px) {
+    .candidates-grid {
         grid-template-columns: 1fr;
     }
     
-    .btn-vote {
-        font-size: 1.1rem;
-        padding: var(--spacing-md) var(--spacing-lg);
+    .results-grid {
+        grid-template-columns: 1fr;
     }
     
-    .result-card {
-        flex-wrap: wrap;
+    .generation-controls {
+        flex-direction: column;
     }
     
-    .result-stats {
-        width: 100%;
-        align-items: flex-start;
-        margin-top: var(--spacing-sm);
+    .actions-panel {
+        flex-direction: column;
     }
     
-    .toast-container {
-        left: var(--spacing-md);
-        right: var(--spacing-md);
+    .voting-table th:not(.candidate-col),
+    .voting-table td:not(.candidate-col) {
+        font-size: 0.75rem;
+        padding: var(--spacing-sm);
     }
 }
-
-/* ===== Animations ===== */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.candidate-card {
-    animation: fadeIn 0.3s ease forwards;
-}
-
-.candidate-card:nth-child(1) { animation-delay: 0.05s; }
-.candidate-card:nth-child(2) { animation-delay: 0.1s; }
-.candidate-card:nth-child(3) { animation-delay: 0.15s; }
-.candidate-card:nth-child(4) { animation-delay: 0.2s; }
 
 /* ===== Accessibility ===== */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
 }
 
-/* Focus states */
 .btn:focus-visible,
 .vote-slider:focus-visible,
 input:focus-visible,
-select:focus-visible {
-    outline: 3px solid white;
+select:focus-visible,
+.tab-btn:focus-visible {
+    outline: 3px solid var(--purple);
     outline-offset: 2px;
 }
